@@ -25,7 +25,7 @@
 
 ## 🚀 核心專案導覽
 
-### 1. [2026 夏令營線上報名系統](./01-summer-camp)
+### 1. [2026 夏令營線上報名系統](./01-summer-camp) (🌐 [Live Demo](https://www.jojozoopark.com/camp/))
 *   **技術棧**: React, Vite, Firebase (Firestore, Functions)
 *   **關鍵亮點**: 將繁重的人工對帳數位化，每梯次節省 4–6 小時，總計節省 **100+ 小時** 行政成本。
 *   **核心功能**: 自動費用試算、即時名額控管、線上匯款回報、後台管理儀表板。

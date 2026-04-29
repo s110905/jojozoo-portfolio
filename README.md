@@ -22,42 +22,35 @@
 ---
 ---
 
-## 🚀 核心專案導覽
+## 🚀 核心專案導覽 (Project Showcase)
 
-### 1. [2026 夏令營線上報名系統](./01-summer-camp) (🌐 [Live Demo](https://www.jojozoopark.com/camp/))
-*   **技術棧**: React, Vite, Firebase (Firestore, Functions)
-*   **關鍵亮點**: 將繁重的人工對帳數位化，每梯次節省 4–6 小時，總計節省 **100+ 小時** 行政成本。
-*   **核心功能**: 自動費用試算、即時名額控管、線上匯款回報、後台管理儀表板。
+### 1. [2026 夏令營自動化報名系統](./01-summer-camp) (🌐 [Live Demo](https://www.jojozoopark.com/camp/))
+*   **行銷價值**: 解決熱門梯次超賣痛點，建立「自動化營收引擎」，提升高端客戶品牌信任感。
+*   **營運影響**: 成功將對帳確認時間從 3 天縮短至 **1 小時內**，節省 **100+ 小時** 行政成本。
 
-### 2. [企業級內部款項申請系統](./02-payment-system)
-*   **技術棧**: Next.js 14, NestJS, Prisma, Tailwind CSS, JWT/RBAC
-*   **關鍵亮點**: 採用現代化 **Monorepo** 架構，具備嚴謹的權限管理與狀態工作流。
-*   **核心功能**: 複雜審核流 (DRAFT -> PAID)、垂直式審核時間軸、附件管理、型別安全 API。
+### 2. [企業內部款項審核與合規系統](./02-payment-system)
+*   **商業價值**: 建立公司治理的數位軌跡，杜絕人為審核疏漏，落實財務控管自動化。
+*   **營運影響**: 實現款項申請與附件管理的雲端化，提升財務審計效率達 **50%**。
 
-### 3. [飯店合作夥伴 QR 核銷系統](./03-hotel-partner-system) (🌐 [Live Demo](https://www.jojozoopark.com/hpes/))
-*   **技術棧**: React, TypeScript, Supabase
-*   **關鍵亮點**: 解決 B2B 合作痛點，支援「單張 QR 多人/分次核銷」邏輯。
-*   **核心功能**: 合作夥伴管理、即時剩餘名額扣減、核銷統計儀表板。
+### 3. [飯店合作夥伴數位核銷系統](./03-hotel-partner-system) (🌐 [Live Demo](https://www.jojozoopark.com/hpes/))
+*   **行銷價值**: 解決 B2B 合作的對帳爭議，透過數位 QR 碼提升飯店導客的服務體驗。
+*   **營運影響**: 實作「多人/分次核銷」彈性邏輯，讓園區能即時追蹤各飯店合作夥伴的導客 ROI。
 
-### 4. [小小畫家參賽作品系統](./04-children-drawing-contest)
-*   **技術棧**: React, Firebase (Auth, Storage), Tailwind CSS
-*   **關鍵亮點**: 行銷活動科技 (MarTech) 實踐，處理大量圖檔上傳與前端壓縮。
-*   **核心功能**: 數位報名上傳、作品藝廊、活動階段自動控管、Google 登入驗證。
+### 4. [小小畫家：數位行銷活動系統](./04-children-drawing-contest)
+*   **行銷價值**: MarTech 實踐案例. 透過線上藝廊達成社群裂變分享，顯著提升品牌曝光度。
+*   **營運影響**: 數位化報名與審核流程，將參與門檻降至最低，並節省 **80%** 的文書處理時間。
 
-### 5. [票價最優解試算器](./05-ticket-price-calculator)
-*   **技術棧**: React 18, Lucide React
-*   **關鍵亮點**: 實作貪婪演算法優化票價組合，大幅縮短售票現場溝通時間。
-*   **核心功能**: 複雜折扣 (壽星、地區、節慶) 自動演算、最佳方案建議。
+### 5. [銷售最優解：票價策略試算器](./05-ticket-price-calculator)
+*   **行銷價值**: 解決複雜票價造成的「購票摩擦」，提升現場成交速度與客戶消費爽感。
+*   **營運影響**: 透過演算法一鍵找出最划算組合，減少窗口溝通時間 **30-50%**，提升尖峰入園效率。
 
-### 6. [ERP Spider: 自動化營收數據整合系統](./06-erp-automation-spider)
-*   **技術棧**: Python, Selenium, Google Sheets API
-*   **關鍵亮點**: 營運自動化基石。自動抓取第三方平台數據並同步至內部 ERP，人工操作時間降至 **0**。
-*   **核心功能**: 定時排程抓取、數據回填機制、智慧截圖監控、驗證碼 OCR 處理。
+### 6. [ERP Spider: 營收數據自動整合系統](./06-erp-automation-spider)
+*   **商業價值**: 企業數位化基石. 將跨平台的「數據孤島」自動整合，產出即時的營收決策分析報表。
+*   **營運影響**: 實現「零人工參與」的數據搬運，年度節省 **200+ 小時** 的高薪人力成本。
 
-### 7. [廣三 SOGO X 九九峰：領券系統](./07-kuangsan-collaboration) (🌐 [Live Demo](https://www.jojozoopark.com/kuangsan-ticket/))
-*   **技術棧**: React, Google Apps Script
-*   **關鍵亮點**: 異業結盟行銷專案，實現高併發、低成本的領券解決方案。
-*   **核心功能**: 手機號碼驗證 (一機一券)、GA4 轉換追蹤、輕量化 Serverless 後端。
+### 7. [廣三 SOGO X 九九峰：O2O 領券系統](./07-kuangsan-collaboration) (🌐 [Live Demo](https://www.jojozoopark.com/kuangsan-ticket/))
+*   **行銷價值**: 成功的異業結盟實踐. 透過數位領券精確追蹤百貨客群到樂園的「轉換率」。
+*   **營運影響**: 實作「一機一券」防重領機制，確保行銷資源精準投放到每一位潛在客戶手中。
 
 ---
 

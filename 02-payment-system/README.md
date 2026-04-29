@@ -44,19 +44,6 @@
 - **後端 (Backend)**：冪等性資料初始化 (Idempotent seeding)、全域 ValidationPipe 驗證、完整狀態日誌系統。
 - **資料庫 (Database)**：PostgreSQL (Prisma)，精確處理申請單、項目明細與附件間的關聯結構。
 
-## 🛠️ 如何啟動
-
-1.  **安裝依賴**：
-    ```bash
-    pnpm install
-    ```
-2.  **啟動開發環境**：
-    ```bash
-    # 同時啟動前端與後端
-    npm run dev:web
-    npm run dev:api
-    ```
-
 ---
 *專為企業內部營運效率而設計的擴展性架構基石 (2026)*
 

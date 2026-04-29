@@ -85,13 +85,6 @@ sequenceDiagram
 > 「本專案展現了如何透過數位轉型，將傳統的 Google 表單作業升級為企業級的自動化流程，為公司建立了可持續使用的數位基礎設施。」
 
 ---
-
-## 如何運行
-
-1. `npm install`
-2. `npm run dev`
-
----
 *Developed by 行銷企劃部 (2026)*
 
 ---

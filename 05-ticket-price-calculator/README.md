@@ -1,7 +1,7 @@
-﻿# JoJo Zoo 蟡典??芾圾閰衣???(Ticket BestPrice Calculator)
+# JoJo Zoo 蟡典??芾圾閰衣???(Ticket BestPrice Calculator)
 
 
-## ?? 系統成果截圖
+## 📸 系統成果截圖
 
 ![系統介面成果](./result.png)
 

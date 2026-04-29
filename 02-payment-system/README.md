@@ -1,7 +1,7 @@
-﻿# 隡平蝝?冽狡?隢?撖拇蝟餌絞 (Enterprise Payment System)
+# 隡平蝝?冽狡?隢?撖拇蝟餌絞 (Enterprise Payment System)
 
 
-## ?? 系統成果截圖
+## 📸 系統成果截圖
 
 ![系統介面成果](./result.png)
 

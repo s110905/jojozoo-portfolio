@@ -1,7 +1,7 @@
-﻿# Hotel Partner Entry System (憌臬???憭乩撈 QR ?賊蝟餌絞)
+# Hotel Partner Entry System (憌臬???憭乩撈 QR ?賊蝟餌絞)
 
 
-## ?? 系統成果截圖
+## 📸 系統成果截圖
 
 ![系統介面成果](./result.png)
 

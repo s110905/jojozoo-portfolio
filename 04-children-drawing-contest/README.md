@@ -1,7 +1,7 @@
-﻿# JoJo Zoo 撠??怠振?魚雿?蝟餌絞 (Drawing Contest System)
+# JoJo Zoo 撠??怠振?魚雿?蝟餌絞 (Drawing Contest System)
 
 
-## ?? 系統成果截圖
+## 📸 系統成果截圖
 
 ![系統介面成果](./result.png)
 

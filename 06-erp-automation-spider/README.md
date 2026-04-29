@@ -1,9 +1,9 @@
-﻿# ERP Spider: ?芸????嗆??頂蝯?
+# ERP Spider: ?芸????嗆??頂蝯?
 ![Project Status](https://img.shields.io/badge/Status-Production-success)
 
-## ?? 自動化執行監控截圖
+## 📸 系統成果截圖
 
-![自動化執行成果](./result.png)
+![系統介面成果](./result.png)
 
 ![Tech Stack](https://img.shields.io/badge/Tech-Python%20%7C%20Selenium%20%7C%20Google%20Sheets%20API-green)
 ![Automation](https://img.shields.io/badge/Automation-Scheduled%20Tasks-orange)

@@ -1,7 +1,7 @@
-﻿# 2026 憌潸?⊿?撽???銝?頂蝯晞?
+# 2026 憌潸?⊿?撽???銝?頂蝯晞?
 ![Project Status](https://img.shields.io/badge/Status-Completed-success)
 
-## ?? 系統成果截圖
+## 📸 系統成果截圖
 
 ![系統介面成果](./result.png)
 

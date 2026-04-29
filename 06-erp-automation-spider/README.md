@@ -4,10 +4,6 @@
 
 
 
-## 📸 系統成果截圖
-
-![系統介面成果](./result.png)
-
 ![Project Status](https://img.shields.io/badge/Status-Production-success)
 ![Tech Stack](https://img.shields.io/badge/Tech-Python%20%7C%20Selenium%20%7C%20Google%20Sheets%20API-green)
 ![Automation](https://img.shields.io/badge/Automation-Scheduled%20Tasks-orange)

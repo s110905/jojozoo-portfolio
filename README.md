@@ -35,7 +35,7 @@
 *   **關鍵亮點**: 採用現代化 **Monorepo** 架構，具備嚴謹的權限管理與狀態工作流。
 *   **核心功能**: 複雜審核流 (DRAFT -> PAID)、垂直式審核時間軸、附件管理、型別安全 API。
 
-### 3. [飯店合作夥伴 QR 核銷系統](./03-hotel-partner-system)
+### 3. [飯店合作夥伴 QR 核銷系統](./03-hotel-partner-system) (🌐 [Live Demo](https://www.jojozoopark.com/hpes/))
 *   **技術棧**: React, TypeScript, Supabase
 *   **關鍵亮點**: 解決 B2B 合作痛點，支援「單張 QR 多人/分次核銷」邏輯。
 *   **核心功能**: 合作夥伴管理、即時剩餘名額扣減、核銷統計儀表板。

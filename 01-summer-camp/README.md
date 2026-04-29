@@ -1,5 +1,8 @@
 # 2026 飼育員體驗營「線上報名系統」
 
+[⬅️ 返回作品集總覽](../README.md)
+
+
 
 ## 📸 系統成果截圖
 
@@ -31,9 +34,38 @@
 - **系統維護模式**：具備即時封閉前台報名的緊急開關。
 
 
+
+### 🏗️ 核心架構設計 (Architecture)
+
+```mermaid
+sequenceDiagram
+    participant User as 家長 (Frontend)
+    participant CF as Firebase Functions
+    participant DB as Firestore
+    
+    User->>CF: 送出報名請求
+    activate CF
+    CF->>DB: 開啟 Transaction
+    activate DB
+    DB-->>CF: 取得目前名額 (currentCount)
+    alt currentCount < maxCapacity
+        CF->>DB: currentCount + 1
+        CF->>DB: 建立 SUCCESS 報名紀錄
+        DB-->>CF: Commit
+        CF-->>User: 報名成功
+    else currentCount >= maxCapacity
+        CF->>DB: 不扣減名額
+        CF->>DB: 建立 WAITING 候補紀錄
+        DB-->>CF: Commit
+        CF-->>User: 進入候補名單
+    end
+    deactivate DB
+    deactivate CF
+```
+
 ## 🛠️ 技術挑戰與解決方案 (Technical Challenges & Solutions)
 
-### 챌린지: 複雜的多梯次名額競爭與對帳延時
+### 挑戰 (Challenge): 複雜的多梯次名額競爭與對帳延時
 *   **問題 (S/T)**：夏令營開放報名瞬間會有大量流量衝擊，且家長匯款後的人工對帳往往造成名額佔用與實際收款的資訊落差。
 *   **行動 (A)**：
     *   **Backend Guards**：在 Firebase Functions 實作了原子性的交易檢查，確保名額扣減不發生超賣。
@@ -64,3 +96,5 @@
 ---
 > 💡 **AI 協作筆記**：本專案之 [架構設計/邏輯優化/Bug 修復] 係透過與 AI 深度對話共同完成，展現了高效能的 AI 輔助開發模式。
 
+
+👉 觀看本專案的 [核心 Prompt 策略](../PROMPTS.md#-案例一夏令營報名系統---複雜名額控管邏輯)

@@ -1,6 +1,6 @@
 # s110905 專業開發作品集 (Portfolio)
 
-![Hero Banner](./images/hero_banner.png)
+![Hero Banner](./images/hero_banner.png?v=2)
 
 
 歡迎來到我的專案作品集。這裡彙整了我近年來在**數位轉型**、**自動化流程**以及**企業內部系統**開發的核心成就。

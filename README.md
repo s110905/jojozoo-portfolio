@@ -55,7 +55,7 @@
 *   **關鍵亮點**: 營運自動化基石。自動抓取第三方平台數據並同步至內部 ERP，人工操作時間降至 **0**。
 *   **核心功能**: 定時排程抓取、數據回填機制、智慧截圖監控、驗證碼 OCR 處理。
 
-### 7. [廣三 SOGO X 九九峰：領券系統](./07-kuangsan-collaboration)
+### 7. [廣三 SOGO X 九九峰：領券系統](./07-kuangsan-collaboration) (🌐 [Live Demo](https://www.jojozoopark.com/kuangsan-ticket/))
 *   **技術棧**: React, Google Apps Script
 *   **關鍵亮點**: 異業結盟行銷專案，實現高併發、低成本的領券解決方案。
 *   **核心功能**: 手機號碼驗證 (一機一券)、GA4 轉換追蹤、輕量化 Serverless 後端。

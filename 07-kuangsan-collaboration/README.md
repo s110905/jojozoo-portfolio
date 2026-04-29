@@ -2,7 +2,8 @@
 
 [⬅️ 返回作品集總覽](../README.md)
 
-
+🔗 **[點此造訪正式上線網站 (Kuangsan Ticket)](https://www.jojozoopark.com/kuangsan-ticket/)**
+*(註：此為企業行銷活動之線上產品。由於原始碼具版權保護，本 Repo 僅供架構分享與能力佐證，不提供完整業務邏輯程式碼)*
 
 ## 📸 系統成果截圖
 

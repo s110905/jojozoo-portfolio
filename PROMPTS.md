@@ -1,0 +1,51 @@
+# AI 協作開發實錄 (AI Collaboration Prompts)
+
+本作品集的所有系統皆係透過精確的 **Prompt Engineering (提示工程)** 與 AI 共同協作產出。以下展示了我在開發過程中的幾個關鍵溝通案例，這反映了我如何將商業需求轉化為高質量的技術產出。
+
+---
+
+## 💎 案例一：夏令營報名系統 - 複雜名額控管邏輯
+
+**背景**：我需要實作一個「如果某梯次額滿，自動轉入候補，但又要防止兩個人同時搶到最後一個位置」的邏輯。
+
+**我的核心 Prompt 策略**：
+> "我正在使用 Firebase Firestore 與 React。請幫我寫一個 Firestore Transaction 函數，用於處理報名名額扣減。邏輯如下：
+> 1. 先讀取梯次文件的 `currentCount` 與 `maxCapacity`。
+> 2. 如果 `currentCount < maxCapacity`，執行 `currentCount + 1` 並建立報名紀錄，回傳 `success`。
+> 3. 如果 `currentCount >= maxCapacity`，則不扣減名額，改為建立一筆狀態為 `WAITING` 的候補紀錄，回傳 `waiting`。
+> 4. 請確保這是在一個 Transaction 內完成，以防止 Race Condition。"
+
+**結果**：AI 產出了基於 `runTransaction` 的高可靠性程式碼，成功應對了開賣瞬間的高併發流量。
+
+---
+
+## 💎 案例二：款項申請系統 - Monorepo 架構規劃
+
+**背景**：我希望將前端 (Next.js) 與後端 (NestJS) 的型別定義統一起來，避免重複定義造成的維護困難。
+
+**我的核心 Prompt 策略**：
+> "我正在建立一個 PNPM Workspaces 的 Monorepo。目錄結構包含 `apps/web`, `apps/api` 與 `packages/shared`。
+> 請告訴我如何在 `packages/shared` 中導出 Zod 的 Schema 與 TypeScript Interface，並讓 `web` 端的 React Hook Form 與 `api` 端的 Prisma 都能共享這些定義。
+> 請提供 `package.json` 的配置範例與 `tsconfig` 的路徑對應設定。"
+
+**結果**：建立了標準的共享型別機制，大幅減少了前後端 API 串接時的對接時間。
+
+---
+
+## 💎 案例三：ERP Spider - 智慧錯誤恢復機制
+
+**背景**：Selenium 爬蟲在遇到網頁加載過慢或驗證碼時常會崩潰。
+
+**我的核心 Prompt 策略**：
+> "這是一個 Python Selenium 腳本。請幫我實作一個裝飾器 (Decorator)，用於包裝所有的導航動作。
+> 當發生 `TimeoutException` 或 `ElementClickInterceptedException` 時，系統應自動執行：
+> 1. 擷取當前畫面存檔。
+> 2. 重新整理頁面。
+> 3. 最多重試 3 次，若失敗則發送 Log 並跳過該日期。
+> 請確保 Log 包含詳細的 XPath 位置，方便我事後 Debug。"
+
+**結果**：系統的自動化成功率從 70% 提升至 95% 以上，實現了真正的「無人值守」運行。
+
+---
+
+> 💡 **結語**：開發者的價值在於「定義問題」與「引導工具」。這份實錄證明了我具備引領 AI 解決複雜技術挑戰的深度。

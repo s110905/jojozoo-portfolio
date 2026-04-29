@@ -43,3 +43,7 @@
 
 ---
 *Created for the 2025 Lunar New Year Promotion Initiative*
+
+---
+> 💡 **AI 協作筆記**：本專案之 [架構設計/邏輯優化/Bug 修復] 係透過與 AI 深度對話共同完成，展現了高效能的 AI 輔助開發模式。
+

@@ -1,51 +1,51 @@
-# ERP Automation & Revenue Intelligence Spider
+# ERP Spider: 自動化營收數據整合系統
 
-[⬅️ Back to Portfolio Overview](../README.md)
+[⬅️ 返回作品集總覽](../README.md)
 
 ![Project Status](https://img.shields.io/badge/Status-Production-success)
 ![Tech Stack](https://img.shields.io/badge/Tech-Python%20%7C%20Selenium%20%7C%20Google%20Sheets%20API-green)
 ![Automation](https://img.shields.io/badge/Automation-Scheduled%20Tasks-orange)
 
-## 1. Executive Summary
-In today's data-driven landscape, the speed and accuracy of decision-making are paramount. This project involved the development of a sophisticated **Python-based RPA (Robotic Process Automation) solution** designed to automate fragmented, manual reporting processes into a **24/7 automated data pipeline**. By integrating data from multiple ERP and ticketing platforms (such as Fonticket and Fontour), the system provides management with real-time, high-fidelity business insights.
+## 1. 專案價值定位 (Value Proposition)
+在數據驅動的時代，決策的速​​度與準確性是企業的核心競爭力。本專案透過先進的 **Python 自動化技術 (RPA)**，將原本碎片化、依賴人工的報表作業，轉化為 **7/24 全天候運行的數據流水線**，為經營者提供即時、精準的商業洞察。
 
-## 2. Business Impact & ROI
+## 2. 商業痛點與解決方案 (The Transformation)
 
-| Challenge (Manual Operations) | Solution (Automated Pipeline) | Strategic Impact |
+| 傳統作業 (Pain Points) | 自動化方案 (Solution) | 轉型效益 (Impact) |
 | :--- | :--- | :--- |
-| **Efficiency Bottleneck**: Manual data extraction from 3+ platforms (2 hours/day). | **Automated Ingestion**: Spider-based navigation for multi-platform data harvesting. | **90% Reduction in Labor Costs** |
-| **Data Latency**: Decisions based on reports with a 24-hour lag time. | **Real-time Sync**: Daily automated scheduling ensures morning-ready insights. | **100% Increase in Decision Speed** |
-| **Human Error**: Manual data entry leading to inconsistencies and inaccuracies. | **AI-Driven ETL**: Programmatic Upsert logic ensuring zero data redundancy. | **100% Data Accuracy** |
+| **效率瓶頸**：每日手動下載、整理三方平台報表 (需 2 小時/日) | **全自動採集**：Spider 毫秒級導航多平台抓取 | **節省 90% 人工耗時** |
+| **數據落後**：依賴人工處理，數據往往落後 24 小時 | **實時數據同步**：每日自動排程，早晨即可查看最新數據 | **決策速度提升 100%** |
+| **人為失誤**：大量複製貼上易導致數值與格式錯誤 | **AI 去重與清洗**：程式化 Upsert 邏輯，確保數據 0 誤差 | **數據準確度達 100%** |
 
-## 3. Core Pillars of Excellence
+## 3. 核心優勢：四大數據堡壘 (Core Pillars)
 
-### 🛡️ Uncompromising Reliability
-The system features an integrated **AI-based OCR (Optical Character Recognition)** module to bypass captcha security and includes advanced **auto-retry mechanisms**. With over **400+ successful executions**, the pipeline has securely processed more than **20,000+ critical business records**.
+### 🛡️ 極致的穩定性 (Reliability)
+系統內建 **AI 驗證碼識別** 與 **自動重試機制**，面對複雜的網路環境與平台限制，仍能穩定產出。目前已成功執行 **400+ 次任務**，妥善處理超過 **20,000 筆核心商務數據**。
 
-### 🧠 Intelligent Data Integrity (Lookback Mechanism)
-A proprietary **"7-Day Dynamic Lookback"** algorithm was implemented to automatically detect and fill data gaps caused by ERP settlement delays. This ensures that the datasets are not just timely, but also fully auditable and comprehensive.
+### 🧠 智慧數據補償 (Intelligence)
+獨家的 **「7 天動態回頭機制」**，能自動偵測並補齊因 ERP 結帳延遲而產生的數據缺口。這意味著您的報表不僅是「快」，更是「完整且具備追溯力」。
 
-### 📊 Real-time Operational Monitoring
-Integrated with **SMTP-based alerting**, the system provides instant notifications. In the event of platform maintenance or credential changes, administrators receive automated diagnostic screenshots and logs, ensuring zero-downtime monitoring.
+### 📊 實時商業預警 (Real-time Monitoring)
+整合 **Gmail 自動通知系統**。若平台出現異常（如密碼變更或系統維護），管理員將第一時間收到錯誤截圖與報告，確保營運監控不中斷。
 
-### 📈 Seamless Ecosystem Integration
-Data is automatically injected into the **Google Cloud Ecosystem**, enabling stakeholders to access real-time dashboards via mobile, desktop, or tablet, ensuring a unified "Single Source of Truth."
+### 📈 無縫數據整合 (Seamless Integration)
+數據自動注入 **Google Cloud 生態系**，讓經營者無論在手機、電腦或平板，都能透過雲端儀表板隨時掌握園區脈動。
 
-## 4. Quantitative Results
-- **Total Records Managed**: 20,000+ high-value transactions.
-- **Operational Uptime**: 400+ consecutive days of stable execution.
-- **Automation Level**: **99.9% Autonomous** (minimal maintenance required).
-- **Annual Savings**: Over **700+ hours** of high-level administrative resources redirected toward strategic marketing initiatives.
+## 4. 量化成果與 ROI (Quantifiable Impact)
+- **數據容量**：總管理數據突破 **20,000+ 筆**。
+- **維護天數**：持續穩定運行 **400+ 天**。
+- **自動化程度**：**99.9%** (僅需在平台更換密碼時進行極少量維護)。
+- **資源節省**：每年節省超過 **700 小時** 的高階行政人力資源，將人才配置在更具創造力的行銷策略上。
 
-## 5. Technical Architecture
-The system is built on a modular architecture:
-- **Core Engine**: `full_automation.py` - Handles authentication, navigation, and data extraction.
-- **Scheduler**: `schedule_runner.py` - Manages automated task execution across Windows and Linux.
-- **Maintenance**: `backfill_*.py` - Suite of tools for historical data recovery and synchronization.
-- **Validation**: Comprehensive unit testing and screenshot-based debugging for 100% data auditability.
-
----
-*Built for Corporate Revenue Intelligence & Automation (2026)*
+## 5. 技術架構 (Technical Architecture)
+本系統採模組化設計：
+- **核心引擎**：`full_automation.py` - 負責登入驗證、頁面導航與數據擷取。
+- **排程器**：`schedule_runner.py` - 控管 Windows 與 Linux 跨平台的排程執行。
+- **維護工具**：`backfill_*.py` - 完整的手動補償工具組，用於歷史數據同步。
+- **驗證機制**：包含單元測試與截圖除錯系統，確保數據 100% 可稽核。
 
 ---
-> 💡 **AI Collaboration Note**: This project's architectural design, logic optimization, and debugging were completed through deep collaboration with AI, demonstrating an efficient AI-assisted development model.
+*為企業營收智慧化與自動化而建置 (2026)*
+
+---
+> 💡 **AI 協作筆記**：本專案之 [架構設計/邏輯優化/Bug 修復] 係透過與 AI 深度對話共同完成，展現了高效能的 AI 輔助開發模式。

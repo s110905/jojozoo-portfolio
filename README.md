@@ -11,8 +11,6 @@
 ## 🤖 AI 協作開發實踐
 本作品集內的所有專案，皆由我透過 **AI 對話式開發 (AI Pair Programming)** 共同完成。這展現了我在現代化開發流程中的核心競爭力：
 
-👉 **[查看詳細的 AI 協作實錄與 Prompt 策略](./PROMPTS.md)**
-
 *   **精準需求轉譯**：能將複雜的商業需求轉化為精確的 AI 提示，快速產出系統原型。
 *   **高效問題排查**：與 AI 協同進行深度除錯與性能優化。
 *   **高品質文件產出**：利用 AI 協助撰寫結構化、符合專業水準的說明文件。
@@ -58,12 +56,16 @@
 *   **行銷價值**: 成功的異業結盟實踐。透過數位領券精確追蹤百貨客群到樂園的「轉換率」。
 *   **營運影響**: 實作「一機一券」防重領機制，確保行銷資源精準投放到每一位潛在客戶手中。
 
+### 8. [POS-Autoclicker：現場營運自動化工具](./08-pos-autoclicker) (🔗 [GitHub](https://github.com/s110905/autopos))
+*   **營運價值**: 針對 POS 現場高頻、低價值的重複點擊流程，打造非侵入式 RPA 工具，降低第一線人員負擔。
+*   **營運影響**: 以單店每日節省 30 分鐘估算，每年可節省約 **182 小時**，並降低疲勞操作造成的人為錯誤。
+
 ---
 
 ## 🛠️ 專業技術棧
 
 *   **前端開發**: React (18/19), Next.js (App Router), TypeScript, Tailwind CSS, Vite.
-*   **後端開發**: NestJS, Node.js, Google Apps Script, Python (Selenium 自動化).
+*   **後端開發**: NestJS, Node.js, Google Apps Script, Python (Selenium / PyAutoGUI 自動化).
 *   **資料庫與雲端**: Firebase, Supabase, PostgreSQL (Prisma), Google Sheets API.
 *   **其他工具**: Git 版本控制, Monorepo 管理, RESTful API 設計, OAuth/JWT 安全驗證.
 

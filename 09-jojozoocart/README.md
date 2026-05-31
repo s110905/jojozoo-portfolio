@@ -6,9 +6,6 @@
 
 > 此專案為園區現場營運用 Web 系統，目標是將遊園車租借流程從紙本登記與人工計時，轉為可追蹤、可稽核、可即時計費的數位作業。
 
-## 系統成果截圖
-
-![系統介面成果](./result.png)
 
 ![Project Status](https://img.shields.io/badge/Status-Production-success)
 ![Tech Stack](https://img.shields.io/badge/Stack-Vanilla%20JS%20%7C%20Cloudflare%20Pages%20%7C%20Supabase-blue)

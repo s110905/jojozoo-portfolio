@@ -60,12 +60,16 @@
 *   **營運價值**: 針對 POS 現場高頻、低價值的重複點擊流程，打造非侵入式 RPA 工具，降低第一線人員負擔。
 *   **營運影響**: 以單店每日節省 30 分鐘估算，每年可節省約 **182 小時**，並降低疲勞操作造成的人為錯誤。
 
+### 9. [JoJo Zoo 遊園車租用與核銷系統](./09-jojozoocart) (🌐 [線上展示](https://jojozoocart.pages.dev/))
+*   **營運價值**: 將現場遊園車租借、交鑰匙、歸還、核銷與車輛啟停整合成數位工作流，降低紙本登記與人工計時造成的錯誤。
+*   **營運影響**: 支援單台與團體租借、程式化計費與 Google Sheet 營收同步，讓租借紀錄可追蹤、可查帳、可持續擴充。
+
 ---
 
 ## 🛠️ 專業技術棧
 
 *   **前端開發**: React (18/19), Next.js (App Router), TypeScript, Tailwind CSS, Vite.
-*   **後端開發**: NestJS, Node.js, Google Apps Script, Python (Selenium / PyAutoGUI 自動化).
+*   **後端開發**: NestJS, Node.js, Cloudflare Pages Functions, Google Apps Script, Python (Selenium / PyAutoGUI 自動化).
 *   **資料庫與雲端**: Firebase, Supabase, PostgreSQL (Prisma), Google Sheets API.
 *   **其他工具**: Git 版本控制, Monorepo 管理, RESTful API 設計, OAuth/JWT 安全驗證.
 

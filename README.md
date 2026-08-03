@@ -40,11 +40,11 @@
 *   **行銷價值**: 解決 B2B 合作的對帳爭議，透過數位 QR 碼提升飯店導客的服務體驗。
 *   **營運影響**: 實作「多人/分次核銷」彈性邏輯，讓園區能即時追蹤各飯店合作夥伴的導客 ROI。
 
-### 4. [小小畫家：數位行銷活動系統](./04-children-drawing-contest)(🌐 [線上展示](https://jojozoochildrenplan.web.app/))
+### 4. [小小畫家：數位行銷活動系統](./04-children-drawing-contest) (🌐 [線上展示](https://jojozoochildrenplan.web.app/))
 *   **行銷價值**: 行銷活動科技實踐。透過線上藝廊達成社群裂變分享，顯著提升品牌曝光度。
 *   **營運影響**: 數位化報名與審核流程，將參與門檻降至最低，並節省 **80%** 的文書處理時間。
 
-### 5. [購票最優解：票價策略試算器](./05-ticket-price-calculator)(🌐 [線上展示](https://best-price-omega.vercel.app/))
+### 5. [購票最優解：票價策略試算器](./05-ticket-price-calculator) (🌐 [線上展示](https://best-price-omega.vercel.app/))
 *   **行銷價值**: 解決複雜票價造成的「購票摩擦」，提升現場成交速度與客戶消費爽感。
 *   **營運影響**: 透過演算法一鍵找出最划算組合，減少窗口溝通時間 **30-50%**，提升尖峰入園效率。
 
@@ -56,7 +56,7 @@
 *   **行銷價值**: 成功的異業結盟實踐。透過數位領券精確追蹤百貨客群到樂園的「轉換率」。
 *   **營運影響**: 實作「一機一券」防重領機制，確保行銷資源精準投放到每一位潛在客戶手中。
 
-### 8. [POS-Autoclicker：現場營運自動化工具](./08-pos-autoclicker) 
+### 8. [POS-Autoclicker：現場營運自動化工具](./08-pos-autoclicker)
 *   **營運價值**: 針對 POS 現場高頻、低價值的重複點擊流程，打造非侵入式 RPA 工具，降低第一線人員負擔。
 *   **營運影響**: 以單店每日節省 30 分鐘估算，每年可節省約 **182 小時**，並降低疲勞操作造成的人為錯誤。
 
@@ -80,9 +80,10 @@
 
 ## 🛠️ 專業技術棧
 
-*   **前端開發**: React (18/19), Next.js (App Router), TypeScript, Tailwind CSS, Vite.
+*   **前端開發**: React (18/19), Next.js (App Router), TypeScript, Tailwind CSS, Vite, Vanilla JS.
 *   **後端開發**: NestJS, Node.js, Cloudflare Pages Functions, Google Apps Script, Python (Selenium / PyAutoGUI 自動化).
 *   **資料庫與雲端**: Firebase, Supabase, PostgreSQL (Prisma), Google Sheets API.
+*   **行銷與體驗技術**: LINE LIFF / Messaging API, Leaflet 地圖, WebAR (裝置方位 + GPS 定位), QR 核銷機制.
 *   **其他工具**: Git 版本控制, Monorepo 管理, RESTful API 設計, OAuth/JWT 安全驗證.
 
 ---

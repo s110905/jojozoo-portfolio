@@ -108,8 +108,4 @@ Google OAuth refresh token、AI API Key 等憑證僅存放於 n8n Credential 或
 
 ---
 
-*為 JoJo Zoo 九九峰動物樂園客服營運建置 (2026・運作中)*
-
----
-
 > 💡 **AI 協作筆記**：本專案之 [風險分級 Prompt 設計 / 雙層自動回覆閘門 / n8n 流程編排與一致性檢查 / 法規風險檢核] 係透過與 AI 深度對話共同完成，展現了高效能的 AI 輔助開發模式。

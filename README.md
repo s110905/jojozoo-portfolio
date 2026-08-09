@@ -76,13 +76,18 @@
 *   **體驗價值**: 在戶外無街景覆蓋的園區，以手繪地圖 + GPS 羅盤自建掃碼即用的 WebAR 導航，消除下載 App 的門檻。
 *   **營運影響**: 地圖與場館資料以設定檔自主維運，掃碼錨點預留合照等互動，為後續行銷活動鋪路。
 
+### 13. [Google 評論 AI 客服自動化：7,000+ 則評論的回覆生產線](./13-customer-service-automation) `運作中`
+*   **品牌價值**: 面對 7,100+ 則 Google 評論，以 AI 產生回覆草稿並統一票價、時間等對外資訊，把公開評論區從「回不完」變成可持續經營的品牌接觸點。
+*   **營運影響**: 人工作業由逐則撰稿降為審稿核准；星等、風險等級與個資檢查等硬性閘門獨立於 AI 判斷，高風險評論一律留給人工，發布權始終在人手上。
+
 ---
 
 ## 🛠️ 專業技術棧
 
 *   **前端開發**: React (18/19), Next.js (App Router), TypeScript, Tailwind CSS, Vite, Vanilla JS.
-*   **後端開發**: NestJS, Node.js, Cloudflare Pages Functions, Google Apps Script, Python (Selenium / PyAutoGUI 自動化).
+*   **後端開發**: NestJS, Node.js, Cloudflare Pages Functions / Workers, Google Apps Script, Python (Selenium / PyAutoGUI 自動化).
 *   **資料庫與雲端**: Firebase, Supabase, PostgreSQL (Prisma), Google Sheets API.
+*   **AI 與流程自動化**: n8n 流程編排, Gemini / OpenAI API 串接, Prompt 工程與品質閘門設計, Google Business Profile API.
 *   **行銷與體驗技術**: LINE LIFF / Messaging API, Leaflet 地圖, WebAR (裝置方位 + GPS 定位), QR 核銷機制.
 *   **其他工具**: Git 版本控制, Monorepo 管理, RESTful API 設計, OAuth/JWT 安全驗證.
 

@@ -106,11 +106,14 @@ if (!(await page.evaluate(() => document.body.classList.contains('staff-mode')))
   process.exit(1)
 }
 
-// 動線：租借中清單 → 車輛管理 → 核銷紀錄。
-// 營運儀表板整頁都是營收，遮掉之後只剩空格子，沒有展示價值，不錄。
+// 動線：租借中清單 → 車輛管理 → 核銷紀錄 → 營運儀表板。
+//
+// 儀表板原本被排除，理由是「遮掉營收後只剩空格子」。那個判斷是錯的：
+// 遮的只有實收總額、平均費用與各車收入，核銷筆數、平均時長與逐車的
+// 使用筆數／總時數都留著，那正好是這套系統最值得展示的分析能力。
 await page.waitForTimeout(2200)
 
-for (const [label, scrollTo] of [['車輛管理', 1500], ['核銷紀錄', 1700]]) {
+for (const [label, scrollTo] of [['車輛管理', 1500], ['核銷紀錄', 1700], ['營運儀表板', 900]]) {
   const button = page.getByRole('button', { name: new RegExp(label) }).first()
   if (!(await button.count())) continue
   await button.click()

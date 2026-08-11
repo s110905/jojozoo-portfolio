@@ -45,14 +45,36 @@ const DEMOS = {
     url: 'https://jojozoocart.pages.dev/',
     viewport: PHONE,
     wait: 'networkidle',
+    // 「點擊租用」會送出 POST /api/rental-draft，在伺服器建立租借草稿。
+    // 靠上面那道非 GET 攔截器擋掉，表單仍會正常渲染，正式資料不受影響。
+    // 表單內容是假資料，而且從頭到尾不會按下「確認租用」。
     async tour(page) {
       await page.waitForTimeout(2500)
-      await glide(page, 700, 2600)
-      await page.waitForTimeout(1400)
-      await glide(page, 1400, 2600)
-      await page.waitForTimeout(1400)
-      await glide(page, 0, 2000)
-      await page.waitForTimeout(1500)
+      await glide(page, 600, 2400)
+      await page.waitForTimeout(1200)
+      await glide(page, 0, 1600)
+      await page.waitForTimeout(1000)
+
+      await page.getByRole('button', { name: /點擊租用/ }).first().click()
+      await page.waitForTimeout(1600)
+
+      for (const [name, value] of [
+        ['customerName', '示範用戶'],
+        ['phone', '0900000000'],
+        ['documentIdSuffix', '0000'],
+      ]) {
+        // 後台區塊有同名的隱藏欄位，必須限定可見的那個
+        const field = page.locator(`input[name="${name}"]:visible`).first()
+        await field.click()
+        await field.pressSequentially(value, { delay: 110 })
+        await page.waitForTimeout(500)
+      }
+
+      await page.locator('input[name="agreementAccepted"]:visible').first().check()
+      await page.waitForTimeout(2200)
+
+      await page.getByRole('button', { name: '重新選車' }).click()
+      await page.waitForTimeout(2000)
     },
   },
   '01-summer-camp': {

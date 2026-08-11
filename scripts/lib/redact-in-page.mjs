@@ -32,6 +32,11 @@ export function redactInPage(mode = 'observe') {
   // 客戶姓名也一起濾掉——漏判比誤判危險。
   const isHeader = (el) => !!el.closest('thead, th, [role="columnheader"]')
 
+  // 介面文字不是資料。導覽按鈕的「租用中」「車輛管理」「核銷紀錄」剛好都是
+  // 2-4 個中文字，會被當成姓名遮掉，整排導覽列變成一堆假名字。
+  // 姓名只會出現在資料欄位，不會是按鈕或標題自己的文字。
+  const isChrome = (el) => !!el.closest('button, a, nav, label, legend, h1, h2, h3, h4, [role="tab"], [role="button"]')
+
   function tag() {
     // 表格用「表頭 → 欄序」判斷。資料列裡看不到表頭文字，
     // 只靠鄰近字串會整欄漏掉。
@@ -61,7 +66,7 @@ export function redactInPage(mode = 'observe') {
       else if (PHONE_TEXT.test(text)) el.setAttribute('data-pii', 'phone')
       else if (/[A-Z]\d{9}/.test(text) || (/^\d{3,4}$/.test(text) && /證|身分|末碼/.test(context)))
         el.setAttribute('data-pii', 'id')
-      else if (NAME_TEXT.test(text) && !HEADER_WORDS.test(text) && !isHeader(el)
+      else if (NAME_TEXT.test(text) && !HEADER_WORDS.test(text) && !isHeader(el) && !isChrome(el)
         && /姓名|租用人|客戶|顧客|客人/.test(context))
         el.setAttribute('data-pii', 'name')
     }

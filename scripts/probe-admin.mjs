@@ -61,6 +61,17 @@ await page.addStyleTag({
   `,
 })
 
+// 營收比照個資處理（2026-08-11 決定）：金額字樣一律先模糊再截圖
+await page.evaluate(() => {
+  const money = /NT\$|＄|\$\s?[\d,]|[\d,]+\s?元|營收|營業額|總計|小計|金額/
+  for (const el of document.querySelectorAll('*')) {
+    if (el.children.length === 0 && money.test(el.textContent || '')) {
+      el.setAttribute('data-money', '')
+      el.style.filter = 'blur(7px)'
+    }
+  }
+})
+
 const report = await page.evaluate(() => {
   const maskText = (s) =>
     (s || '').replace(/\d/g, '#').replace(/[一-鿿]/g, '○').replace(/[A-Za-z]{2,}/g, 'Aa').trim()
@@ -106,6 +117,16 @@ const report = await page.evaluate(() => {
     }
   }
   lines.push(suspects.length ? suspects.slice(0, 40).join('\n') : '  （目前畫面沒有偵測到）')
+
+  lines.push(`\n金額與營收元素（一律要遮，值已遮蔽）：`)
+  const money = []
+  for (const el of document.querySelectorAll('[data-money]')) {
+    if (!visible(el)) continue
+    const r = el.getBoundingClientRect()
+    const sel = el.className ? `.${String(el.className).split(' ')[0]}` : el.tagName.toLowerCase()
+    money.push(`  ${sel} @ x=${Math.round(r.x)} y=${Math.round(r.y + scrollY)} w=${Math.round(r.width)} h=${Math.round(r.height)}  值=${maskText(el.textContent).slice(0, 16)}`)
+  }
+  lines.push(money.length ? money.slice(0, 40).join('\n') : '  （目前畫面沒有偵測到）')
   lines.push(`\n頁高：${document.body.scrollHeight}`)
   return lines.join('\n')
 })

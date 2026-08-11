@@ -99,8 +99,9 @@ const TAG_IN_PAGE = () => {
   const NAME = /^[一-鿿]{2,4}$/
   const HEADER_WORDS = /^(姓名|租用人|客戶|顧客|電話|車輛|狀態|時間|操作|金額|備註|證件)$/
 
-  const isHeader = (el) =>
-    !!el.closest('thead, th, [role="columnheader"], [class*="head" i], [class*="label" i]')
+  // 只排除真正的表頭。曾經多加了 [class*="label"]，結果把租借卡片上的
+  // 客戶姓名也一起濾掉——漏判比誤判危險，這個條件不能放寬。
+  const isHeader = (el) => !!el.closest('thead, th, [role="columnheader"]')
 
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
   let node
@@ -152,6 +153,23 @@ const REPORT_IN_PAGE = (viewName) => {
       found.push(`${describe(el)}  值=${mask(el.textContent).slice(0, 16)}${kind ? `  [${kind}]` : ''}`)
     }
     lines.push(found.length ? found.slice(0, 40).join('\n') : '  （這個分頁沒有偵測到）')
+  }
+
+  // 抽一列資料看它的欄位結構，用來確認偵測有沒有漏。
+  // 只印元素標籤與遮蔽後的值，真實內容不會出現。
+  const sample = [...document.querySelectorAll('tbody tr, [class*="card" i], li')]
+    .find((el) => visible(el) && el.textContent.trim().length > 12)
+  if (sample) {
+    lines.push('', '抽樣一列的欄位結構（確認有沒有漏判）：')
+    for (const cell of sample.querySelectorAll('*')) {
+      if (cell.children.length || !visible(cell)) continue
+      const text = mask(cell.textContent).slice(0, 18)
+      if (!text) continue
+      const tag = cell.className ? `.${String(cell.className).split(' ')[0]}` : cell.tagName.toLowerCase()
+      const flag = cell.hasAttribute('data-pii') ? ' ← 已標記個資'
+        : cell.hasAttribute('data-money') ? ' ← 已標記金額' : ''
+      lines.push(`  ${tag.padEnd(18)} ${text}${flag}`)
+    }
   }
   return lines.join('\n')
 }

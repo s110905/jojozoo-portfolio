@@ -11,7 +11,7 @@
 //
 // 產出 video-raw/admin-structure.txt：只有選擇器與「欄位長什麼樣」，
 // 所有數字換成 #、中文字串換成 ○，真實姓名與電話不會被寫出來。
-// 截圖同樣做過遮蔽，可以安全拿來對座標。
+// 截圖 admin-redacted.png 的個資與金額是直接被方塊字元取代，不是模糊。
 
 import { chromium } from 'playwright'
 import { mkdirSync, writeFileSync } from 'node:fs'
@@ -91,24 +91,31 @@ if (!loggedIn) {
   process.exit(1)
 }
 
-// 在任何截圖之前先把可能的個資蓋掉
-await page.addStyleTag({
-  content: `
-    [data-pii], .customer-name, .customer-phone, [href^="tel:"],
-    input[name="customerName"], input[name="phone"], input[name="documentIdSuffix"] {
-      filter: blur(7px) !important;
-    }
-  `,
-})
-
-// 營收比照個資處理（2026-08-11 決定）：金額字樣一律先模糊再截圖
+// 標記所有個資與金額元素。
+//
+// 原本是注入 CSS 做模糊，但遊園車站自己的 CSP 有 style-src 'self'，注入會被擋。
+// 改成直接改寫文字內容：不依賴任何樣式，而且比模糊更徹底——模糊還原得回來，
+// 刪掉的字還原不了。
 await page.evaluate(() => {
-  const money = /NT\$|＄|\$\s?[\d,]|[\d,]+\s?元|營收|營業額|總計|小計|金額/
+  const MONEY = /NT\$|＄|\$\s?[\d,]|[\d,]+\s?元|營收|營業額|總計|小計|金額/
+  const PHONE = /09\d{2}[- ]?\d{3}[- ]?\d{3}/
+  const NAME = /^[一-鿿]{2,4}$/
+
   for (const el of document.querySelectorAll('*')) {
-    if (el.children.length === 0 && money.test(el.textContent || '')) {
-      el.setAttribute('data-money', '')
-      el.style.filter = 'blur(7px)'
-    }
+    if (el.children.length) continue
+    const text = (el.textContent || '').trim()
+    if (!text) continue
+    const context = el.parentElement?.textContent ?? ''
+
+    if (MONEY.test(text)) el.setAttribute('data-money', '')
+    else if (PHONE.test(text)) el.setAttribute('data-pii', 'phone')
+    else if (/[A-Z]\d{9}/.test(text) || (/\d{4}$/.test(text) && /證|身分|末碼/.test(context)))
+      el.setAttribute('data-pii', 'id')
+    else if (NAME.test(text) && /姓名|租用人|客戶|顧客/.test(context))
+      el.setAttribute('data-pii', 'name')
+  }
+  for (const input of document.querySelectorAll('input')) {
+    if (/customerName|phone|document/i.test(input.name || '')) input.setAttribute('data-pii', 'field')
   }
 })
 
@@ -141,20 +148,17 @@ const report = await page.evaluate(() => {
     lines.push(`    首列：${row}`)
   }
 
-  lines.push(`\n看起來像個資的元素（值已遮蔽，附選擇器與座標）：`)
+  const describe = (el) => {
+    const r = el.getBoundingClientRect()
+    const sel = el.className ? `.${String(el.className).split(' ')[0]}` : el.tagName.toLowerCase()
+    return `  ${sel} @ x=${Math.round(r.x)} y=${Math.round(r.y + scrollY)} w=${Math.round(r.width)} h=${Math.round(r.height)}`
+  }
+
+  lines.push(`\n個資元素（值已遮蔽，附選擇器與座標）：`)
   const suspects = []
-  for (const el of document.querySelectorAll('*')) {
-    if (el.children.length || !visible(el)) continue
-    const text = el.textContent.trim()
-    if (!text || text.length > 30) continue
-    const looksPhone = /09\d{2}[- ]?\d{3}[- ]?\d{3}/.test(text)
-    const looksName = /^[一-鿿]{2,4}$/.test(text)
-    const looksId = /[A-Z]\d{9}|\d{4}$/.test(text) && /證|身分|末碼/.test(el.parentElement?.textContent ?? '')
-    if (looksPhone || looksId || (looksName && /姓名|租用人|客戶|顧客/.test(el.parentElement?.textContent ?? ''))) {
-      const r = el.getBoundingClientRect()
-      const sel = el.className ? `.${String(el.className).split(' ')[0]}` : el.tagName.toLowerCase()
-      suspects.push(`  ${sel} @ x=${Math.round(r.x)} y=${Math.round(r.y + scrollY)} w=${Math.round(r.width)} h=${Math.round(r.height)}  值=${maskText(text)}  ${looksPhone ? '[電話]' : looksId ? '[證件]' : '[姓名]'}`)
-    }
+  for (const el of document.querySelectorAll('[data-pii]')) {
+    if (!visible(el)) continue
+    suspects.push(`${describe(el)}  值=${maskText(el.textContent).slice(0, 14)}  [${el.getAttribute('data-pii')}]`)
   }
   lines.push(suspects.length ? suspects.slice(0, 40).join('\n') : '  （目前畫面沒有偵測到）')
 
@@ -162,9 +166,7 @@ const report = await page.evaluate(() => {
   const money = []
   for (const el of document.querySelectorAll('[data-money]')) {
     if (!visible(el)) continue
-    const r = el.getBoundingClientRect()
-    const sel = el.className ? `.${String(el.className).split(' ')[0]}` : el.tagName.toLowerCase()
-    money.push(`  ${sel} @ x=${Math.round(r.x)} y=${Math.round(r.y + scrollY)} w=${Math.round(r.width)} h=${Math.round(r.height)}  值=${maskText(el.textContent).slice(0, 16)}`)
+    money.push(`${describe(el)}  值=${maskText(el.textContent).slice(0, 16)}`)
   }
   lines.push(money.length ? money.slice(0, 40).join('\n') : '  （目前畫面沒有偵測到）')
   lines.push(`\n頁高：${document.body.scrollHeight}`)
@@ -172,10 +174,21 @@ const report = await page.evaluate(() => {
 })
 
 writeFileSync(join(OUT_DIR, 'admin-structure.txt'), report, 'utf8')
-await page.screenshot({ path: join(OUT_DIR, 'admin-blurred.png'), fullPage: true })
+
+// 截圖前把標記過的內容整個換掉。報告已經產生完畢，這裡可以直接破壞畫面。
+const redacted = await page.evaluate(() => {
+  let count = 0
+  for (const el of document.querySelectorAll('[data-pii], [data-money]')) {
+    if (el.tagName === 'INPUT') el.value = '████'
+    else el.textContent = '█'.repeat(Math.min(8, Math.max(2, el.textContent.trim().length)))
+    count++
+  }
+  return count
+})
+await page.screenshot({ path: join(OUT_DIR, 'admin-redacted.png'), fullPage: true })
 await browser.close()
 
 console.log(report)
 console.log(`\n報告： video-raw/admin-structure.txt`)
-console.log(`截圖： video-raw/admin-blurred.png（個資欄位已模糊）`)
+console.log(`截圖： video-raw/admin-redacted.png（${redacted} 個個資／金額元素已被方塊取代）`)
 if (attempted.length) console.log(`\n登入後攔下的寫入請求：\n  ${attempted.join('\n  ')}`)

@@ -103,6 +103,22 @@ const TAG_IN_PAGE = () => {
   // 客戶姓名也一起濾掉——漏判比誤判危險，這個條件不能放寬。
   const isHeader = (el) => !!el.closest('thead, th, [role="columnheader"]')
 
+  // 表格先用「欄位表頭 → 欄序」判斷。資料列裡看不到表頭文字，
+  // 只靠鄰近字串會整欄漏掉——核銷紀錄的姓名欄就是這樣漏的。
+  for (const table of document.querySelectorAll('table')) {
+    const heads = [...table.querySelectorAll('thead th')].map((th) => th.textContent.trim())
+    if (!heads.length) continue
+    for (const row of table.querySelectorAll('tbody tr')) {
+      [...row.children].forEach((cell, i) => {
+        const head = heads[i] || ''
+        if (/姓名|租用人|承租|客戶|顧客/.test(head)) cell.setAttribute('data-pii', 'name')
+        else if (/電話|手機|聯絡/.test(head)) cell.setAttribute('data-pii', 'phone')
+        else if (/證件|身分|末碼/.test(head)) cell.setAttribute('data-pii', 'id')
+        else if (/金額|費用|價|收入|營收/.test(head)) cell.setAttribute('data-money', '')
+      })
+    }
+  }
+
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
   let node
   while ((node = walker.nextNode())) {
@@ -142,6 +158,13 @@ const REPORT_IN_PAGE = (viewName) => {
   const lines = [`### ${viewName}`, `標題：${document.title}`, `頁高：${document.body.scrollHeight}`, '', '可見按鈕：']
   for (const b of document.querySelectorAll('button')) {
     if (visible(b)) lines.push(`  - ${b.textContent.replace(/\s+/g, ' ').trim().replace(/\d/g, '#').slice(0, 34)}`)
+  }
+
+  // 表頭本身不是機敏資料，原樣印出來才能核對欄位有沒有對到
+  for (const table of document.querySelectorAll('table')) {
+    if (!visible(table)) continue
+    const heads = [...table.querySelectorAll('thead th')].map((th) => th.textContent.trim())
+    if (heads.length) lines.push('', `表格欄位：${heads.join(' | ')}`)
   }
 
   for (const [title, selector] of [['個資元素', '[data-pii]'], ['金額與營收元素', '[data-money]']]) {

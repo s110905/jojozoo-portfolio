@@ -6,7 +6,7 @@
 //   Git Bash:    export CART_ADMIN_PASSWORD='你的密碼'
 //   然後：       node scripts/probe-admin.mjs
 //
-// 後台層級預設 super，需要別的層級時再設 CART_ADMIN_LEVEL=onsite|admin|super。
+// 後台層級預設 admin，需要別的層級時再設 CART_ADMIN_LEVEL=onsite|admin|super。
 // 密碼絕不會被印出來：不使用會回顯參數的 Playwright API，且所有錯誤輸出都先過濾。
 //
 // 產出 video-raw/admin-structure.txt：只有選擇器與「欄位長什麼樣」，
@@ -29,7 +29,7 @@ if (!password) {
 }
 
 // 後台入口是網址參數：onsite（現場）／admin（管理）／super（最高權限）
-const level = process.env.CART_ADMIN_LEVEL || 'super'
+const level = process.env.CART_ADMIN_LEVEL || 'admin'
 
 // Playwright 會把 API 參數寫進錯誤訊息的 call log，locator.fill(密碼) 曾因此
 // 讓密碼出現在終端機輸出裡。以下兩道措施確保密碼不會被印出來：
@@ -86,7 +86,7 @@ const loggedIn = await page.evaluate(() =>
   document.body.classList.contains('staff-mode'))
 if (!loggedIn) {
   console.error(`以 ${level} 層級登入失敗。請確認密碼正確，或改用其他層級：`)
-  console.error('  $env:CART_ADMIN_LEVEL = "admin"   # 或 onsite / super')
+  console.error('  $env:CART_ADMIN_LEVEL = "onsite"   # 或 admin / super')
   await browser.close()
   process.exit(1)
 }

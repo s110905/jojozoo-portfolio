@@ -71,6 +71,18 @@
   line-height: 1.75;
 }
 
+.case-demo { margin: 36px 0 0; }
+.case-demo video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--ink);
+}
+.case-demo figcaption { margin-top: 12px; color: var(--muted); font-size: 12.5px; line-height: 1.7; }
+
 .case-toc {
   margin: 44px 0 0;
   padding: 22px 24px;

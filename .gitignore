@@ -26,3 +26,6 @@ dist/
 .dev.vars
 .wrangler/
 .cloudflare/
+
+# 錄影原始檔（壓縮後的成品在 public/videos/）
+video-raw/

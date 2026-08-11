@@ -17,6 +17,14 @@ const AUTHOR = '張文豪 Toyo Chang'
 const CASE_DIR = /^\d\d-/
 const REPO = 'https://github.com/s110905/jojozoo-portfolio'
 
+// 有 public/videos/<slug>.mp4 的案例會自動長出示範影片區塊。
+// 說明文字要老實交代這支是怎麼錄的。
+const DEMO_NOTES = {
+  '01-summer-camp': '正式上線的報名頁實際畫面。錄製過程只瀏覽頁面，未填寫或送出任何報名資料。',
+  '09-jojozoocart': '正式上線系統的即時車輛狀態，資料為錄製當下的真實營運狀況。未觸發任何租借寫入。',
+  '11-mothersday-lottery': '活動檔期已結束，此為活動頁面的保留畫面。',
+}
+
 const BADGE_COLORS = {
   brightgreen: 'mint', green: 'mint', success: 'mint',
   blue: 'blue', orange: 'amber', yellow: 'amber',
@@ -171,6 +179,20 @@ ${body}
 `
 }
 
+function demoBlock(slug) {
+  if (!existsSync(join(ROOT, 'public/videos', `${slug}.mp4`))) return ''
+  const caption = DEMO_NOTES[slug] ?? '實際上線畫面錄製。'
+  return `        <figure class="case-demo">
+          <video controls preload="none" playsinline muted width="1280" height="720" poster="/videos/${slug}.jpg">
+            <source src="/videos/${slug}.webm" type="video/webm" />
+            <source src="/videos/${slug}.mp4" type="video/mp4" />
+            <a href="/videos/${slug}.mp4">下載示範影片</a>
+          </video>
+          <figcaption>示範影片（無聲）·&nbsp;${esc(caption)}</figcaption>
+        </figure>
+`
+}
+
 function caseBody({ index, total, title, lead, note, badges, toc, content, slug, prev, next }) {
   const chips = badges.length
     ? `<div class="case-chips">${badges
@@ -188,7 +210,7 @@ function caseBody({ index, total, title, lead, note, badges, toc, content, slug,
         ${lead ? `<p class="case-lead">${esc(lead)}</p>` : ''}
         ${chips}
         ${note ? `<p class="case-note">${marked.parseInline(note)}</p>` : ''}
-        ${toc}
+${demoBlock(slug)}        ${toc}
         <article class="prose">
 ${content}
         </article>

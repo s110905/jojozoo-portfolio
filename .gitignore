@@ -12,3 +12,17 @@ desktop.ini
 __pycache__/
 *.pyc
 .venv/
+
+# Frontend
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+
+# Local secrets and deployment state
+.env
+.env.*
+!.env.example
+.dev.vars
+.wrangler/
+.cloudflare/

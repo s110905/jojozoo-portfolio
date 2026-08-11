@@ -95,3 +95,24 @@
 **聯絡資訊：**
 *   GitHub: [s110905](https://github.com/s110905)
 *   Email: [s110905toyo@gmail.com](mailto:s110905toyo@gmail.com)
+
+---
+
+## 個人網站開發與部署
+
+本專案包含以 React、TypeScript 與 Vite 製作的個人作品網站。
+
+```bash
+pnpm install
+pnpm dev
+pnpm build
+```
+
+Cloudflare Pages 建議設定：
+
+*   **Production branch**: `master`
+*   **Build command**: `pnpm build`
+*   **Build output directory**: `dist`
+*   **Root directory**: `/`
+
+`public/_headers` 會在建置時一併輸出，提供基本安全標頭與靜態資源快取設定。

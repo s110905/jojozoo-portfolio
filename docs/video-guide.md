@@ -94,7 +94,29 @@ node scripts/process-video.mjs 錄好的檔案.mp4 03-hotel-partner-system \
 
 輸出會產生三個檔：`.mp4`（H.264）、`.webm`（VP9）、`.jpg`（封面）。
 
-## 六、放上網站
+## 六、把多段接成一支
+
+一個案例只放一支影片。前台與後台要一起呈現時，先各自處理好，再接起來：
+
+```bash
+# 1. 兩段各自去敏、裁切、正規化
+node scripts/process-video.mjs video-raw/cart-front.webm cart-front-tmp --trim 2,22
+node scripts/process-video.mjs video-raw/cart-admin.webm cart-admin-tmp --hide 420,180,300,40
+
+# 2. 接起來，段落之間會插入標題卡
+node scripts/join-videos.mjs 09-jojozoocart \
+  public/videos/cart-front-tmp.mp4 "前台 · 現場掃碼租借" \
+  public/videos/cart-admin-tmp.mp4 "後台 · 核銷與營運管理"
+
+# 3. 刪掉中繼檔
+rm public/videos/cart-*-tmp.*
+```
+
+標題卡是網站底色加一行置中白字與藍色底線，1.6 秒。封面會自動避開標題卡，取第一段的實際畫面。
+
+**遮蔽一定要在第 1 步做完**：`join-videos.mjs` 只負責接，不會再遮任何東西。
+
+## 七、放上網站
 
 1. 確認 `public/videos/<slug>.mp4` 已存在。
 2. 到 `scripts/build-cases.mjs` 的 `DEMO_NOTES` 加一行說明，老實交代這支是怎麼錄的

@@ -103,6 +103,17 @@ const TAG_IN_PAGE = () => {
   // 客戶姓名也一起濾掉——漏判比誤判危險，這個條件不能放寬。
   const isHeader = (el) => !!el.closest('thead, th, [role="columnheader"]')
 
+  // 依表頭判斷整欄性質。與其一直補同義詞（「客人」就漏過一次），
+  // 沒對上的欄位一律回報為未分類，由人決定，而不是預設安全。
+  const classifyColumn = (head) => {
+    if (/姓名|名字|客人|客戶|顧客|旅客|乘客|租客|承租|租用人|聯絡人/.test(head)) return 'name'
+    if (/電話|手機|聯絡方式|Tel|Phone/i.test(head)) return 'phone'
+    if (/證件|身分|身份|末碼|護照|居留/.test(head)) return 'id'
+    if (/金額|費用|價|收入|營收|實收|應收/.test(head)) return 'money'
+    return null
+  }
+  window.__classifyColumn = classifyColumn
+
   // 表格先用「欄位表頭 → 欄序」判斷。資料列裡看不到表頭文字，
   // 只靠鄰近字串會整欄漏掉——核銷紀錄的姓名欄就是這樣漏的。
   for (const table of document.querySelectorAll('table')) {
@@ -110,11 +121,9 @@ const TAG_IN_PAGE = () => {
     if (!heads.length) continue
     for (const row of table.querySelectorAll('tbody tr')) {
       [...row.children].forEach((cell, i) => {
-        const head = heads[i] || ''
-        if (/姓名|租用人|承租|客戶|顧客/.test(head)) cell.setAttribute('data-pii', 'name')
-        else if (/電話|手機|聯絡/.test(head)) cell.setAttribute('data-pii', 'phone')
-        else if (/證件|身分|末碼/.test(head)) cell.setAttribute('data-pii', 'id')
-        else if (/金額|費用|價|收入|營收/.test(head)) cell.setAttribute('data-money', '')
+        const kind = classifyColumn(heads[i] || '')
+        if (kind === 'money') cell.setAttribute('data-money', '')
+        else if (kind) cell.setAttribute('data-pii', kind)
       })
     }
   }
@@ -160,11 +169,18 @@ const REPORT_IN_PAGE = (viewName) => {
     if (visible(b)) lines.push(`  - ${b.textContent.replace(/\s+/g, ' ').trim().replace(/\d/g, '#').slice(0, 34)}`)
   }
 
-  // 表頭本身不是機敏資料，原樣印出來才能核對欄位有沒有對到
+  // 逐欄列出判定結果。表頭不是機敏資料，原樣印出來；
+  // 沒對上規則的欄位標成「未分類」，漏遮就會在這裡現形。
+  const LABEL = { name: '遮 · 姓名', phone: '遮 · 電話', id: '遮 · 證件', money: '遮 · 金額' }
   for (const table of document.querySelectorAll('table')) {
     if (!visible(table)) continue
     const heads = [...table.querySelectorAll('thead th')].map((th) => th.textContent.trim())
-    if (heads.length) lines.push('', `表格欄位：${heads.join(' | ')}`)
+    if (!heads.length) continue
+    lines.push('', '表格欄位判定：')
+    for (const head of heads) {
+      const kind = window.__classifyColumn?.(head)
+      lines.push(`  ${head.padEnd(10)} ${kind ? LABEL[kind] : '保留（未對上規則）'}`)
+    }
   }
 
   for (const [title, selector] of [['個資元素', '[data-pii]'], ['金額與營收元素', '[data-money]']]) {

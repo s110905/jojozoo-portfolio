@@ -1,0 +1,177 @@
+/* 案例頁樣式。變數與 .brand / .site-footer 沿用主樣式表，
+   這裡只補靜態頁自己的頁首、頁面骨架與長文排版。 */
+
+.case-header {
+  width: min(1220px, calc(100% - 48px));
+  height: 88px;
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.case-back {
+  padding: 9px 15px;
+  color: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  font-size: 13px;
+  white-space: nowrap;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.case-back:hover { border-color: rgba(72, 168, 255, 0.45); background: rgba(72, 168, 255, 0.08); }
+
+.case-page {
+  width: min(820px, calc(100% - 48px));
+  margin-inline: auto;
+  padding-block: 56px 96px;
+}
+.case-page .eyebrow { color: var(--blue); font: 500 11px 'IBM Plex Mono', monospace; letter-spacing: 0.12em; }
+.case-page .eyebrow a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.case-page h1 {
+  margin: 18px 0 0;
+  font-size: clamp(30px, 5.4vw, 46px);
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+}
+.case-lead {
+  margin: 20px 0 0;
+  max-width: 42em;
+  color: #c2cee0;
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.case-chips { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: rgba(13, 27, 47, 0.72);
+  font-size: 12px;
+  font-weight: 600;
+}
+.chip small { color: var(--muted); font: 500 9px 'IBM Plex Mono', monospace; letter-spacing: 0.08em; text-transform: uppercase; }
+.chip-mint { color: #bff6e7; border-color: rgba(107, 227, 193, 0.32); }
+.chip-blue { color: #cfe6ff; border-color: rgba(72, 168, 255, 0.32); }
+.chip-amber { color: #ffe6b8; border-color: rgba(244, 199, 107, 0.32); }
+.chip-violet { color: #e2d1ff; border-color: rgba(169, 111, 255, 0.32); }
+.chip-muted { color: #c3cddc; }
+
+.case-note {
+  margin: 26px 0 0;
+  padding: 16px 18px;
+  color: #dffcf4;
+  border-left: 2px solid var(--mint);
+  background: rgba(107, 227, 193, 0.055);
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.case-toc {
+  margin: 44px 0 0;
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(13, 27, 47, 0.62);
+}
+.case-toc p { margin: 0 0 12px; color: var(--violet); font: 500 10px 'IBM Plex Mono', monospace; letter-spacing: 0.1em; }
+.case-toc ol { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+.case-toc li { color: var(--muted); font-size: 13px; }
+.case-toc a { color: #c8d3e4; }
+.case-toc a:hover { color: var(--blue); }
+
+/* 長文排版 */
+.prose { margin-top: 8px; }
+.prose h2 {
+  margin: 64px 0 0;
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
+  font-size: clamp(23px, 3.4vw, 28px);
+  letter-spacing: -0.025em;
+}
+.prose h3 { margin: 38px 0 0; color: #dbe6f7; font-size: 17px; letter-spacing: -0.015em; }
+.prose p { margin: 18px 0 0; color: #aebacf; font-size: 15.5px; line-height: 1.9; }
+.prose strong { color: var(--paper); font-weight: 600; }
+.prose ul, .prose ol { margin: 18px 0 0; padding-left: 22px; display: grid; gap: 11px; }
+.prose li { color: #aebacf; font-size: 15.5px; line-height: 1.85; }
+.prose li::marker { color: rgba(72, 168, 255, 0.7); }
+.prose a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+.prose a:hover { color: #8cc8ff; }
+.prose img { margin: 30px 0 0; width: 100%; border: 1px solid var(--line); border-radius: 16px; }
+.prose hr { margin: 56px 0 0; border: 0; border-top: 1px solid var(--line); }
+.prose blockquote {
+  margin: 26px 0 0;
+  padding: 16px 20px;
+  border-left: 2px solid var(--violet);
+  background: rgba(169, 111, 255, 0.06);
+  border-radius: 0 12px 12px 0;
+}
+.prose blockquote p { margin: 0; color: #cdd7e8; font-size: 14.5px; }
+
+.prose code {
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: rgba(118, 145, 193, 0.14);
+  font: 500 0.88em 'IBM Plex Mono', ui-monospace, monospace;
+  color: #d8e4f6;
+}
+.prose pre {
+  margin: 26px 0 0;
+  padding: 20px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(7, 17, 31, 0.85);
+}
+.prose pre code {
+  padding: 0;
+  background: none;
+  color: #b7c8de;
+  font-size: 12.5px;
+  line-height: 1.75;
+  white-space: pre;
+}
+
+.table-wrap { margin: 26px 0 0; overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; }
+.prose table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.prose th, .prose td { padding: 13px 16px; text-align: left; border-bottom: 1px solid var(--line); }
+.prose th { color: var(--paper); background: rgba(16, 35, 61, 0.8); font: 600 12px 'IBM Plex Mono', monospace; letter-spacing: 0.04em; white-space: nowrap; }
+.prose td { color: #aebacf; line-height: 1.7; }
+.prose tr:last-child td { border-bottom: 0; }
+
+.case-source { margin: 56px 0 0; font-size: 14px; }
+.case-source a { color: var(--muted); }
+.case-source a:hover { color: var(--blue); }
+
+.case-nav { margin-top: 56px; padding-top: 32px; display: flex; gap: 16px; justify-content: space-between; border-top: 1px solid var(--line); }
+.case-nav-link {
+  flex: 0 1 46%;
+  display: grid;
+  gap: 6px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(13, 27, 47, 0.62);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.case-nav-link:hover { border-color: rgba(72, 168, 255, 0.4); transform: translateY(-2px); }
+.case-nav-link small { color: var(--muted); font: 500 9px 'IBM Plex Mono', monospace; letter-spacing: 0.1em; }
+.case-nav-next { text-align: right; }
+.case-home { margin: 34px 0 0; font-size: 14px; }
+.case-home a { color: var(--blue); }
+
+@media (max-width: 760px) {
+  .case-header { width: calc(100% - 32px); height: 72px; }
+  .case-page { width: calc(100% - 32px); padding-block: 34px 72px; }
+  .prose h2 { margin-top: 48px; }
+  .case-nav { flex-direction: column; }
+  .case-nav-link { flex: 1 1 auto; }
+  .case-nav-next { text-align: left; }
+}

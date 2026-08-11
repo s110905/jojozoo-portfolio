@@ -1,5 +1,6 @@
 import {
   ArrowDownRight,
+  ArrowRight,
   ArrowUpRight,
   Bot,
   Boxes,
@@ -50,7 +51,7 @@ const projects: Project[] = [
     problem: '熱門梯次容易超賣，報名資料與匯款確認分散。',
     solution: '把選梯次、即時名額、報名與財務對帳整合在同一流程。',
     result: '23 個梯次在 1 小時內完成報名',
-    image: { src: '/images/projects/summer-camp.webp', width: 1400, height: 788 },
+    image: { src: '/images/cases/01-summer-camp/result.webp', width: 1400, height: 788 },
     live: 'https://www.jojozoopark.com/camp/',
     casePath: '01-summer-camp',
     tags: ['React', 'Firebase', '流程設計'],
@@ -62,7 +63,7 @@ const projects: Project[] = [
     problem: '營收資料散落在不同平台，每月都要重複登入、下載與整理。',
     solution: '透過排程爬取、清洗資料並自動同步至管理報表。',
     result: '已執行 400+ 次，管理 20,000+ 筆資料',
-    image: { src: '/images/projects/erp-spider.webp', width: 1400, height: 686 },
+    image: { src: '/images/cases/06-erp-automation-spider/result.webp', width: 1400, height: 686 },
     casePath: '06-erp-automation-spider',
     tags: ['Python', 'Selenium', 'Google Sheets'],
     featured: true,
@@ -73,7 +74,7 @@ const projects: Project[] = [
     problem: '紙本登記、人工計時與計費讓現場容易出錯，也不利於查帳。',
     solution: '整合租借、交車、歸還、程式化計費與營收同步。',
     result: '租借紀錄可追蹤、可查帳、可擴充',
-    image: { src: '/images/projects/jojozoocart.webp', width: 1176, height: 819 },
+    image: { src: '/images/cases/09-jojozoocart/result.webp', width: 1176, height: 819 },
     live: 'https://jojozoocart.pages.dev/',
     casePath: '09-jojozoocart',
     tags: ['Cloudflare', 'Supabase', '計費演算法'],
@@ -85,7 +86,7 @@ const projects: Project[] = [
     problem: '紙本核銷難辨真偽，多人分次入園與月底對帳容易產生爭議。',
     solution: '設計飯店產券、園區即時 QR 核銷、原子扣額與權限紀錄。',
     result: '支援多人分次使用，逐筆核銷可追蹤',
-    image: { src: '/images/projects/hotel-partner.webp', width: 1400, height: 656 },
+    image: { src: '/images/cases/03-hotel-partner-system/result.webp', width: 1400, height: 656 },
     live: 'https://www.jojozoopark.com/hpes/',
     casePath: '03-hotel-partner-system',
     tags: ['Supabase', 'RLS', 'QR Code'],
@@ -93,13 +94,15 @@ const projects: Project[] = [
   },
 ]
 
-const moreWork = [
-  ['企業內部管理平台', '以共用權限與稽核底層承接跨部門流程', '上線測試'],
-  ['小小畫家活動平台', '線上藝廊帶動分享，文書處理降低 80%', '已上線'],
-  ['POS Autoclicker', '44 版現場迭代，降低重複操作負擔', '現場使用'],
-  ['WebAR 園區導航', '手繪地圖、GPS 與羅盤的免下載導覽', '開發中'],
-  ['LINE 好友抽抽樂', '將活動流量沉澱為可再行銷名單', '已上線'],
-  ['購票最優解', '演算法找出最省票價組合，降低窗口溝通', '已上線'],
+const moreWork: [string, string, string, string][] = [
+  ['企業內部管理平台', '以共用權限與稽核底層承接跨部門流程', '上線測試', '02-payment-system'],
+  ['小小畫家活動平台', '線上藝廊帶動分享，文書處理降低 80%', '已上線', '04-children-drawing-contest'],
+  ['POS Autoclicker', '44 版現場迭代，降低重複操作負擔', '現場使用', '08-pos-autoclicker'],
+  ['WebAR 園區導航', '手繪地圖、GPS 與羅盤的免下載導覽', '開發中', '12-webar-park-guide'],
+  ['LINE 好友抽抽樂', '將活動流量沉澱為可再行銷名單', '已上線', '10-line-lucky-draw'],
+  ['購票最優解', '演算法找出最省票價組合，降低窗口溝通', '已上線', '05-ticket-price-calculator'],
+  ['廣三 SOGO 數位領券', '百貨檔期換票流程數位化，導客進園區', '檔期結束', '07-kuangsan-collaboration'],
+  ['母親節抽抽樂', '節慶檔期導客，回收可再行銷名單', '檔期結束', '11-mothersday-lottery'],
 ]
 
 const buildSteps = [
@@ -109,8 +112,7 @@ const buildSteps = [
   ['SHIP', '上線後持續量測與修正', '以真實使用者回饋迭代，讓工具能用、有人用，也能長期維運。'],
 ]
 
-const caseUrl = (path: string) =>
-  `https://github.com/s110905/jojozoo-portfolio/tree/master/${path}`
+const caseUrl = (slug: string) => `/case/${slug}/`
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -257,7 +259,7 @@ function App() {
                   <div className="project-footer">
                     <div className="tag-list">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
                     <div className="project-links">
-                      <a href={caseUrl(project.casePath)} target="_blank" rel="noreferrer">案例 <ArrowUpRight size={15} /></a>
+                      <a href={caseUrl(project.casePath)}>案例 <ArrowRight size={15} /></a>
                       {project.live && <a href={project.live} target="_blank" rel="noreferrer">展示 <ArrowUpRight size={15} /></a>}
                     </div>
                   </div>
@@ -301,12 +303,13 @@ function App() {
             </a>
           </div>
           <div className="more-work-grid">
-            {moreWork.map(([title, description, status]) => (
-              <article key={title}>
+            {moreWork.map(([title, description, status, slug]) => (
+              <a className="more-work-card" href={caseUrl(slug)} key={title}>
                 <span>{status}</span>
                 <h3>{title}</h3>
                 <p>{description}</p>
-              </article>
+                <em>看案例 <ArrowRight size={14} /></em>
+              </a>
             ))}
           </div>
         </section>

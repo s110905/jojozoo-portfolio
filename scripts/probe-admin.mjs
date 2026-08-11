@@ -16,6 +16,7 @@ import { chromium } from 'playwright'
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { installWriteGuard } from './lib/write-guard.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const OUT_DIR = join(ROOT, 'video-raw')
@@ -56,16 +57,9 @@ mkdirSync(OUT_DIR, { recursive: true })
 const browser = await chromium.launch()
 const context = await browser.newContext({ viewport: { width: 1280, height: 900 } })
 
-// 登入需要送出請求，因此先放行；登入完成後立刻改為只允許 GET，
-// 之後不管點到什麼都不會寫進正式資料庫。
-let allowWrites = true
-const attempted = []
-await context.route('**/*', (route) => {
-  const req = route.request()
-  if (req.method() === 'GET' || allowWrites) return route.continue()
-  attempted.push(`${req.method()} ${req.url().split('?')[0]}`)
-  return route.abort()
-})
+// 寫入防護：規則見 lib/write-guard.mjs。這個 API 用 POST 做讀取，
+// 因此不能以方法判斷，必須走端點允許清單。
+const guard = installWriteGuard(context)
 
 const page = await context.newPage()
 await page.goto(`${URL}?staff=${level}`, { waitUntil: 'networkidle' })
@@ -84,7 +78,7 @@ await page.evaluate((secret) => {
 }, password)
 
 await page.waitForTimeout(5000)
-allowWrites = false
+guard.lockdown() // 登入完成，連 staff-login 都不再放行
 
 if (!(await page.evaluate(() => document.body.classList.contains('staff-mode')))) {
   console.error(`以 ${level} 層級登入失敗。請確認密碼正確，或改用其他層級：`)
@@ -146,7 +140,7 @@ const REPORT_IN_PAGE = (viewName) => {
 
   const lines = [`### ${viewName}`, `標題：${document.title}`, `頁高：${document.body.scrollHeight}`, '', '可見按鈕：']
   for (const b of document.querySelectorAll('button')) {
-    if (visible(b)) lines.push(`  - ${mask(b.textContent.replace(/\s+/g, ' ').trim()).slice(0, 34)}`)
+    if (visible(b)) lines.push(`  - ${b.textContent.replace(/\s+/g, ' ').trim().replace(/\d/g, '#').slice(0, 34)}`)
   }
 
   for (const [title, selector] of [['個資元素', '[data-pii]'], ['金額與營收元素', '[data-money]']]) {
@@ -202,4 +196,4 @@ writeFileSync(join(OUT_DIR, 'admin-structure.txt'), out, 'utf8')
 console.log(out)
 console.log(`\n報告： video-raw/admin-structure.txt`)
 console.log(`截圖： video-raw/admin-*.png（個資與金額已被方塊取代）`)
-if (attempted.length) console.log(`\n登入後攔下的寫入請求：\n  ${attempted.join('\n  ')}`)
+if (guard.blocked.length) console.log(`\n攔下的寫入請求：\n  ${guard.blocked.join('\n  ')}`)

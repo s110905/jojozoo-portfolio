@@ -2,7 +2,7 @@
 //
 // 這些是正式營運系統，因此腳本有兩道保護：
 //   1. 動線只做瀏覽與切換分頁，不觸發送出。
-//   2. page.route 攔截所有非 GET 請求並中止，寫入在瀏覽器層就出不去。
+//   2. lib/write-guard.mjs 攔截並中止所有寫入請求，寫入在瀏覽器層就出不去。
 //      真的有人改動線導致寫入嘗試，主控台會印出來。
 //
 // 產出 raw/<slug>.webm，後續交給 scripts/process-video.mjs 壓縮與去敏。
@@ -13,6 +13,7 @@ import { chromium } from 'playwright'
 import { mkdir, readdir, rename, rm } from 'node:fs/promises'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { installWriteGuard } from './lib/write-guard.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const RAW_DIR = join(ROOT, 'video-raw')
@@ -125,13 +126,8 @@ async function record(slug, demo) {
     recordVideo: { dir, size: demo.viewport },
   })
 
-  const blocked = []
-  await context.route('**/*', (route) => {
-    const request = route.request()
-    if (request.method() === 'GET') return route.continue()
-    blocked.push(`${request.method()} ${request.url()}`)
-    return route.abort()
-  })
+  // 寫入防護：規則見 lib/write-guard.mjs。錄影不需要登入，連 staff-login 都擋掉。
+  const guard = installWriteGuard(context, { allowLogin: false })
 
   const page = await context.newPage()
   await page.goto(demo.url, { waitUntil: demo.wait, timeout: 60000 })
@@ -143,7 +139,7 @@ async function record(slug, demo) {
   await rename(join(dir, file), join(RAW_DIR, `${slug}.webm`))
   await rm(dir, { recursive: true, force: true })
 
-  if (blocked.length) console.log(`  ! 攔下 ${blocked.length} 個寫入請求：\n    ${blocked.join('\n    ')}`)
+  if (guard.blocked.length) console.log(`  ! 攔下 ${guard.blocked.length} 個寫入請求：\n    ${guard.blocked.join('\n    ')}`)
   console.log(`  video-raw/${slug}.webm`)
 }
 

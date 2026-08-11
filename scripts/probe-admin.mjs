@@ -17,6 +17,7 @@ import { mkdirSync, writeFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { installWriteGuard } from './lib/write-guard.mjs'
+import { redactInPage } from './lib/redact-in-page.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const OUT_DIR = join(ROOT, 'video-raw')
@@ -87,69 +88,7 @@ if (!(await page.evaluate(() => document.body.classList.contains('staff-mode')))
   process.exit(1)
 }
 
-/**
- * 標記個資與金額。
- *
- * 走 text node 而不是元素：金額常常被包在按鈕或卡片的子層裡，
- * 只看葉元素會整個漏掉（「核銷紀錄 08/11 13,650 元」就是這樣漏的）。
- */
-const TAG_IN_PAGE = () => {
-  const MONEY = /(?:NT\$|＄|\$)\s?[\d,]+|[\d,]+\s*元/
-  const PHONE = /09\d{2}[- ]?\d{3}[- ]?\d{3}/
-  const NAME = /^[一-鿿]{2,4}$/
-  const HEADER_WORDS = /^(姓名|租用人|客戶|顧客|電話|車輛|狀態|時間|操作|金額|備註|證件)$/
-
-  // 只排除真正的表頭。曾經多加了 [class*="label"]，結果把租借卡片上的
-  // 客戶姓名也一起濾掉——漏判比誤判危險，這個條件不能放寬。
-  const isHeader = (el) => !!el.closest('thead, th, [role="columnheader"]')
-
-  // 依表頭判斷整欄性質。與其一直補同義詞（「客人」就漏過一次），
-  // 沒對上的欄位一律回報為未分類，由人決定，而不是預設安全。
-  const classifyColumn = (head) => {
-    if (/姓名|名字|客人|客戶|顧客|旅客|乘客|租客|承租|租用人|聯絡人/.test(head)) return 'name'
-    if (/電話|手機|聯絡方式|Tel|Phone/i.test(head)) return 'phone'
-    if (/證件|身分|身份|末碼|護照|居留/.test(head)) return 'id'
-    if (/金額|費用|價|收入|營收|實收|應收/.test(head)) return 'money'
-    return null
-  }
-  window.__classifyColumn = classifyColumn
-
-  // 表格先用「欄位表頭 → 欄序」判斷。資料列裡看不到表頭文字，
-  // 只靠鄰近字串會整欄漏掉——核銷紀錄的姓名欄就是這樣漏的。
-  for (const table of document.querySelectorAll('table')) {
-    const heads = [...table.querySelectorAll('thead th')].map((th) => th.textContent.trim())
-    if (!heads.length) continue
-    for (const row of table.querySelectorAll('tbody tr')) {
-      [...row.children].forEach((cell, i) => {
-        const kind = classifyColumn(heads[i] || '')
-        if (kind === 'money') cell.setAttribute('data-money', '')
-        else if (kind) cell.setAttribute('data-pii', kind)
-      })
-    }
-  }
-
-  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
-  let node
-  while ((node = walker.nextNode())) {
-    const text = (node.data || '').trim()
-    if (!text) continue
-    const el = node.parentElement
-    if (!el || el.hasAttribute('data-money') || el.hasAttribute('data-pii')) continue
-    const context = el.closest('div,li,tr,section')?.textContent ?? ''
-
-    if (MONEY.test(text)) el.setAttribute('data-money', '')
-    else if (PHONE.test(text)) el.setAttribute('data-pii', 'phone')
-    else if (/[A-Z]\d{9}/.test(text) || (/^\d{3,4}$/.test(text) && /證|身分|末碼/.test(context)))
-      el.setAttribute('data-pii', 'id')
-    // 表頭本身就叫「租用人」，不能因為附近有這些字就把欄位名當成姓名
-    else if (NAME.test(text) && !HEADER_WORDS.test(text) && !isHeader(el)
-      && /姓名|租用人|客戶|顧客/.test(context))
-      el.setAttribute('data-pii', 'name')
-  }
-  for (const input of document.querySelectorAll('input')) {
-    if (/customerName|phone|document/i.test(input.name || '')) input.setAttribute('data-pii', 'field')
-  }
-}
+// 標記規則見 lib/redact-in-page.mjs，與錄影腳本共用同一份判定。
 
 const REPORT_IN_PAGE = (viewName) => {
   const mask = (s) => (s || '').replace(/\d/g, '#').replace(/[一-鿿]/g, '○').replace(/[A-Za-z]{2,}/g, 'Aa').trim()
@@ -235,7 +174,7 @@ for (const view of VIEWS) {
     await page.waitForTimeout(2500)
   }
 
-  await page.evaluate(TAG_IN_PAGE)
+  await page.evaluate(redactInPage, 'tag')
   const report = await page.evaluate(REPORT_IN_PAGE, view.name)
   const hidden = await page.evaluate(REDACT_IN_PAGE)
   await page.screenshot({ path: join(OUT_DIR, `admin-${view.slug}.png`), fullPage: true })

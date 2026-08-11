@@ -206,9 +206,11 @@ img { display: block; max-width: 100%; }
 .more-work-section { padding-block: 120px; }
 .section-heading.compact { align-items: end; }
 .section-heading.compact h2 { font-size: clamp(36px, 4vw, 52px); }
-.more-work-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
-.more-work-grid article { min-height: 185px; padding: 25px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(13,27,47,.28); transition: background .2s ease; }
-.more-work-grid article:hover { background: rgba(16,35,61,.7); }
+.more-work-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.more-work-card { min-height: 185px; padding: 25px; display: flex; flex-direction: column; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(13,27,47,.28); transition: background .2s ease; }
+.more-work-card:hover { background: rgba(16,35,61,.7); }
+.more-work-card em { margin-top: auto; padding-top: 16px; display: flex; align-items: center; gap: 5px; color: var(--blue); font: 600 12px/1 inherit; font-style: normal; opacity: .55; transition: opacity .2s ease; }
+.more-work-card:hover em, .more-work-card:focus-visible em { opacity: 1; }
 .more-work-grid span { color: var(--mint); font: 500 9px 'IBM Plex Mono', monospace; }
 .more-work-grid h3 { margin: 25px 0 8px; font-size: 17px; }
 .more-work-grid p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.7; }

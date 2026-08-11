@@ -9,3 +9,10 @@
 
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
+
+# 圖片與影片檔名沒有 content hash，換檔後最多一天內生效
+/images/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/videos/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800

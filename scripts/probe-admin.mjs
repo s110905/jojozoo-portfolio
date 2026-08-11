@@ -200,7 +200,9 @@ for (const view of VIEWS) {
   const report = await page.evaluate(REPORT_IN_PAGE, view.name)
   const hidden = await page.evaluate(REDACT_IN_PAGE)
   await page.screenshot({ path: join(OUT_DIR, `admin-${view.slug}.png`), fullPage: true })
-  reports.push(`${report}\n\n（截圖前已取代 ${hidden} 個元素 → admin-${view.slug}.png）`)
+  // 這是 SPA，所有分頁的標記都在同一份 DOM 裡，所以總數每個分頁都一樣；
+  // 分頁之間的差別在上面「可見」的那幾筆。
+  reports.push(`${report}\n\n（截圖前取代 ${hidden} 個元素，含其他分頁的隱藏節點 → admin-${view.slug}.png）`)
 
   // 遮蔽會破壞畫面，換分頁前重新載入。token 存在 localStorage，不必再輸入密碼。
   await page.reload({ waitUntil: 'networkidle' })

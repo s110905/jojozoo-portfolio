@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://toyo-chang.pages.dev/sitemap.xml

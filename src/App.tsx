@@ -13,11 +13,10 @@ import {
   Zap,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import heroDesktop from '../images/hero_banner.png'
-import summerCampImage from '../01-summer-camp/result.png'
-import erpImage from '../06-erp-automation-spider/result.png'
-import cartImage from '../09-jojozoocart/result.png'
-import hotelImage from '../03-hotel-partner-system/result.png'
+
+// 圖片放在 public/images，由 scripts/optimize_images.py 從各案例的原始 PNG 產生。
+// 走固定路徑而非 import，首屏那張才能在 index.html 先 preload。
+const heroImage = '/images/hero_banner.webp'
 
 type Project = {
   title: string
@@ -25,7 +24,7 @@ type Project = {
   problem: string
   solution: string
   result: string
-  image?: string
+  image?: { src: string; width: number; height: number }
   live?: string
   casePath: string
   tags: string[]
@@ -51,7 +50,7 @@ const projects: Project[] = [
     problem: '熱門梯次容易超賣，報名資料與匯款確認分散。',
     solution: '把選梯次、即時名額、報名與財務對帳整合在同一流程。',
     result: '23 個梯次在 1 小時內完成報名',
-    image: summerCampImage,
+    image: { src: '/images/projects/summer-camp.webp', width: 1400, height: 788 },
     live: 'https://www.jojozoopark.com/camp/',
     casePath: '01-summer-camp',
     tags: ['React', 'Firebase', '流程設計'],
@@ -63,7 +62,7 @@ const projects: Project[] = [
     problem: '營收資料散落在不同平台，每月都要重複登入、下載與整理。',
     solution: '透過排程爬取、清洗資料並自動同步至管理報表。',
     result: '已執行 400+ 次，管理 20,000+ 筆資料',
-    image: erpImage,
+    image: { src: '/images/projects/erp-spider.webp', width: 1400, height: 686 },
     casePath: '06-erp-automation-spider',
     tags: ['Python', 'Selenium', 'Google Sheets'],
     featured: true,
@@ -74,7 +73,7 @@ const projects: Project[] = [
     problem: '紙本登記、人工計時與計費讓現場容易出錯，也不利於查帳。',
     solution: '整合租借、交車、歸還、程式化計費與營收同步。',
     result: '租借紀錄可追蹤、可查帳、可擴充',
-    image: cartImage,
+    image: { src: '/images/projects/jojozoocart.webp', width: 1176, height: 819 },
     live: 'https://jojozoocart.pages.dev/',
     casePath: '09-jojozoocart',
     tags: ['Cloudflare', 'Supabase', '計費演算法'],
@@ -86,7 +85,7 @@ const projects: Project[] = [
     problem: '紙本核銷難辨真偽，多人分次入園與月底對帳容易產生爭議。',
     solution: '設計飯店產券、園區即時 QR 核銷、原子扣額與權限紀錄。',
     result: '支援多人分次使用，逐筆核銷可追蹤',
-    image: hotelImage,
+    image: { src: '/images/projects/hotel-partner.webp', width: 1400, height: 656 },
     live: 'https://www.jojozoopark.com/hpes/',
     casePath: '03-hotel-partner-system',
     tags: ['Supabase', 'RLS', 'QR Code'],
@@ -178,7 +177,14 @@ function App() {
 
           <div className="hero-visual" aria-label="Toyo Chang 個人照片與建置紀錄">
             <div className="portrait-crop">
-              <img src={heroDesktop} alt="Toyo Chang 個人照片" />
+              <img
+                src={heroImage}
+                alt="Toyo Chang 個人照片"
+                width={1774}
+                height={887}
+                fetchPriority="high"
+                decoding="async"
+              />
             </div>
             <div className="status-chip"><span></span> AVAILABLE FOR NEW CHALLENGES</div>
             <div className="floating-log">
@@ -217,7 +223,16 @@ function App() {
             {projects.map((project, index) => (
               <article className={`project-card project-${index + 1}`} key={project.title}>
                 <div className={`project-image${project.visual ? ' ai-review-visual' : ''}`}>
-                  {project.image && <img src={project.image} alt={`${project.title}系統畫面`} loading="lazy" />}
+                  {project.image && (
+                    <img
+                      src={project.image.src}
+                      alt={`${project.title}系統畫面`}
+                      width={project.image.width}
+                      height={project.image.height}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  )}
                   {project.visual === 'ai-review' && (
                     <div className="review-pipeline" aria-hidden="true">
                       <div className="review-message"><span>★★★★★</span><p>環境很舒服，服務人員很親切...</p></div>

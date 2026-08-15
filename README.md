@@ -44,7 +44,7 @@
 *   **行銷價值**: 行銷活動科技實踐。透過線上藝廊達成社群裂變分享，顯著提升品牌曝光度。
 *   **營運影響**: 數位化報名與審核流程，將參與門檻降至最低，並節省 **80%** 的文書處理時間。
 
-### 5. [購票最優解：票價策略試算器](./05-ticket-price-calculator) (🌐 [線上展示](https://best-price-omega.vercel.app/))
+### 5. [購票最優解：票價策略試算器](./05-ticket-price-calculator)
 *   **行銷價值**: 解決複雜票價造成的「購票摩擦」，提升現場成交速度與客戶消費爽感。
 *   **營運影響**: 透過演算法一鍵找出最划算組合，減少窗口溝通時間 **30-50%**，提升尖峰入園效率。
 
@@ -52,7 +52,7 @@
 *   **商業價值**: 企業數位化基石。將跨平台的「數據孤島」自動整合，產出即時的營收決策分析報表。
 *   **營運影響**: 實現「零人工參與」的數據搬運，年度節省 **200+ 小時** 的人力成本。
 
-### 7. [廣三 SOGO X 九九峰：O2O 領券系統](./07-kuangsan-collaboration) (🌐 [線上展示](https://www.jojozoopark.com/kuangsan-ticket/))
+### 7. [廣三 SOGO X 九九峰：O2O 領券系統](./07-kuangsan-collaboration) `檔期已結束`
 *   **行銷價值**: 成功的異業結盟實踐。透過數位領券精確追蹤百貨客群到樂園的「轉換率」。
 *   **營運影響**: 實作「一機一券」防重領機制，確保行銷資源精準投放到每一位潛在客戶手中。
 
@@ -95,24 +95,3 @@
 **聯絡資訊：**
 *   GitHub: [s110905](https://github.com/s110905)
 *   Email: [s110905toyo@gmail.com](mailto:s110905toyo@gmail.com)
-
----
-
-## 個人網站開發與部署
-
-本專案包含以 React、TypeScript 與 Vite 製作的個人作品網站。
-
-```bash
-pnpm install
-pnpm dev
-pnpm build
-```
-
-Cloudflare Pages 建議設定：
-
-*   **Production branch**: `master`
-*   **Build command**: `pnpm build`
-*   **Build output directory**: `dist`
-*   **Root directory**: `/`
-
-`public/_headers` 會在建置時一併輸出，提供基本安全標頭與靜態資源快取設定。

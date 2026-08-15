@@ -3,12 +3,12 @@
 
 [⬅️ 返回作品集總覽](../README.md)
 
-🔗 **[點此造訪正式上線網站 (Kuangsan Ticket)](https://www.jojozoopark.com/kuangsan-ticket/)**
+🔒 **檔期已結束，展示網站已下架。**
 *(註：此為企業行銷活動之線上產品。由於原始碼具版權保護，本 Repo 僅供架構分享與能力佐證，不提供完整業務邏輯程式碼)*
 
 ![系統成果截圖](./result.png)
 
-![Project Status](https://img.shields.io/badge/Status-Completed-success)
+![Project Status](https://img.shields.io/badge/Status-Campaign%20Ended-lightgrey)
 ![Tech Stack](https://img.shields.io/badge/Stack-React%20%7C%20Vite%20%7C%20GAS-blue)
 ![Marketing](https://img.shields.io/badge/Focus-B2C%20MarTech-orange)
 

@@ -10,12 +10,13 @@
 // 各片段請先用 process-video.mjs 處理過（去敏、裁切、正規化成 1280x720）。
 // 這裡只負責接起來，不會再做遮蔽——遮蔽一定要在上一步完成。
 //
-// 產出：public/videos/<slug>.mp4 / .webm / .jpg
+// 產出：public/videos/<分類>/<slug>.mp4 / .webm / .jpg
 
 import { spawnSync } from 'node:child_process'
 import { mkdirSync, rmSync, statSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { categoryOf, videoPath } from './lib/video-categories.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const OUT_DIR = join(ROOT, 'public', 'videos')
@@ -46,7 +47,7 @@ function run(args, label) {
 
 rmSync(TMP_DIR, { recursive: true, force: true })
 mkdirSync(TMP_DIR, { recursive: true })
-mkdirSync(OUT_DIR, { recursive: true })
+mkdirSync(join(OUT_DIR, categoryOf(slug)), { recursive: true })
 
 // 標題卡：純色底 + 置中文字，長度固定
 const escapeText = (s) => s.replace(/([:'\\])/g, '\\$1')
@@ -78,7 +79,7 @@ for (const [i, part] of parts.entries()) {
 }
 const concat = `${filters.join(';')};${Array.from({ length: index }, (_, i) => `[v${i}]`).join('')}concat=n=${index}:v=1:a=0[out]`
 
-const base = join(OUT_DIR, slug)
+const base = join(OUT_DIR, categoryOf(slug), slug)
 run(['-v', 'error', ...inputs, '-filter_complex', concat, '-map', '[out]', '-an',
   '-c:v', 'libx264', '-crf', '29', '-preset', 'slow', '-profile:v', 'high', '-pix_fmt', 'yuv420p',
   '-movflags', '+faststart', '-y', `${base}.mp4`], 'MP4 合併')
@@ -95,6 +96,6 @@ rmSync(TMP_DIR, { recursive: true, force: true })
 
 const kb = (f) => `${Math.round(statSync(f).size / 1024)} KB`
 console.log(`${slug}  合併 ${parts.length} 段：${parts.map((p) => p.label).join(' → ')}`)
-console.log(`  public/videos/${slug}.mp4   ${kb(`${base}.mp4`)}`)
-console.log(`  public/videos/${slug}.webm  ${kb(`${base}.webm`)}`)
-console.log(`  public/videos/${slug}.jpg   ${kb(`${base}.jpg`)}`)
+for (const ext of ['mp4', 'webm', 'jpg']) {
+  console.log(`  public/${videoPath(slug, ext)}`.padEnd(52) + kb(`${base}.${ext}`))
+}

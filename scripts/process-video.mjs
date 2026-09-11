@@ -19,6 +19,7 @@ import { spawnSync } from 'node:child_process'
 import { mkdirSync, statSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { categoryOf, videoPath } from './lib/video-categories.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const OUT_DIR = join(ROOT, 'public', 'videos')
@@ -108,8 +109,10 @@ if (opts.probe) {
   process.exit(0)
 }
 
-mkdirSync(OUT_DIR, { recursive: true })
-const base = join(OUT_DIR, slug)
+// 影片依分類放進子資料夾，開檔案總管時才找得到東西（對應表在 lib/video-categories.mjs）
+const outDir = join(OUT_DIR, categoryOf(slug))
+mkdirSync(outDir, { recursive: true })
+const base = join(outDir, slug)
 
 run(['-v', 'error', ...trim, '-i', input, '-filter_complex', filter, '-map', '[v]', '-an',
   '-c:v', 'libx264', '-crf', String(opts.crf), '-preset', 'slow', '-profile:v', 'high', '-pix_fmt', 'yuv420p',
@@ -125,6 +128,6 @@ run(['-v', 'error', '-ss', String(opts.poster), '-i', `${base}.mp4`, '-frames:v'
 const kb = (f) => `${Math.round(statSync(f).size / 1024)} KB`
 console.log(`${slug}  來源 ${source.width}x${source.height}${portrait ? '（直式，左右補底色）' : ''}` +
   `${opts.hide.length ? `，遮蔽 ${opts.hide.length} 區` : ''}`)
-console.log(`  public/videos/${slug}.mp4   ${kb(`${base}.mp4`)}`)
-console.log(`  public/videos/${slug}.webm  ${kb(`${base}.webm`)}`)
-console.log(`  public/videos/${slug}.jpg   ${kb(`${base}.jpg`)}`)
+for (const ext of ['mp4', 'webm', 'jpg']) {
+  console.log(`  public/${videoPath(slug, ext)}`.padEnd(52) + kb(`${base}.${ext}`))
+}

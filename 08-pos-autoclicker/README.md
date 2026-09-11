@@ -2,8 +2,6 @@
 
 [⬅️ 返回作品集總覽](../README.md)
 
-[🔗 查看原始專案](https://github.com/s110905/autopos)
-
 ![Project Status](https://img.shields.io/badge/Status-Completed-success)
 ![Tech Stack](https://img.shields.io/badge/Stack-Python%20%7C%20PyAutoGUI%20%7C%20Tkinter-blue)
 ![Automation](https://img.shields.io/badge/Automation-Windows%20Scheduler-orange)

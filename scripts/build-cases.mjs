@@ -9,20 +9,34 @@ import { existsSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { marked } from 'marked'
+import { videoHref, videoPath } from './lib/video-categories.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST = join(ROOT, 'dist')
 const SITE = 'https://toyo-chang.pages.dev'
 const AUTHOR = '張文豪 Toyo Chang'
 const CASE_DIR = /^\d\d-/
-const REPO = 'https://github.com/s110905/jojozoo-portfolio'
 
 // 有 public/videos/<slug>.mp4 的案例會自動長出示範影片區塊。
 // 說明文字要老實交代這支是怎麼錄的。
 const DEMO_NOTES = {
   '01-summer-camp': '正式上線的報名頁實際畫面。錄製過程只瀏覽頁面，未填寫或送出任何報名資料。',
+  '02-payment-system': '請款單審核動線與角色權限控制：同一張單、同一個權限頁，管理員與普通員工看到的可執行動作完全不同。畫面資料為系統內建的預覽用測試資料，員工姓名、廠商與金額皆為虛構。',
+  '03-hotel-partner-system': '飯店端建立入場憑證、現場掃碼、依實際人數分次扣額的完整流程。飯店名稱為虛構示範對象，後端回應全程以測試資料模擬，正式資料未被讀取或寫入。',
+  '04-children-drawing-contest': '活動頁與作品藝廊的實際操作。所有畫作縮圖與小畫家姓名在畫面渲染前即已置換為示意內容，真實投稿作品未出現在影片中；票數為系統實際數值。',
+  '05-ticket-price-calculator': '完整試算流程：選日期、填同行人數與身分優惠，系統自動挑出最省的票種組合。畫面上的票價為對外公告牌價。',
+  '07-kuangsan-collaboration': '聯名活動的完整動線：領券、產生 QR 體驗券、現場掃碼核銷。後端回應全程以測試資料模擬，正式票券資料未被寫入或讀取。',
+  '08-pos-autoclicker': '依實際錄製的點擊腳本（config_*.json）繪製的動線圖，座標與延遲未經調整。工具本身是貼在螢幕頂端的橫幅式視窗，不適合錄成影片，因此改以動線呈現它每天重放的內容。',
   '09-jojozoocart': '正式上線系統的前台租借流程與後台核銷、逐車使用分析。錄製時攔截所有寫入請求，未產生任何紀錄；顧客姓名、電話與金額在畫面渲染前即已置換。',
-  '11-mothersday-lottery': '活動檔期已結束，此為活動頁面的保留畫面。',
+  '10-line-lucky-draw': '抽獎、中獎券、工作人員核銷到後台統計的完整動線。LINE 登入與資料庫皆以測試替身運作，正式活動資料未被讀取或寫入；後台的參加與兌換數字為示範資料。',
+  // 11-mothersday-lottery 與 06-erp-automation-spider 的影片已依使用者要求下架
+  // （2026-09-11），檔案移到 video-raw/removed/。要放回來的話把檔案搬回
+  // public/videos/<分類>/ 並在這裡補回說明即可。
+  '13-customer-service-automation': '客服調度台：AI 依核准知識庫產生草稿、人工確認、送出前再一道收件人檢查。系統以本機 Mock 模式運行，畫面上的顧客與案件皆為預覽資料，未連線正式客服系統，也沒有任何訊息真的送出。',
+  '14-anniversary-find-four': '遊客端完整動線：來源問卷、掃碼集點、等級升級到核銷解鎖。所有後端回應皆為測試資料，正式活動的參加紀錄未被讀取或寫入。',
+  '16-seo-analytics': '專案實際產出的 GA4 唯讀分析報告原文，只換上便於閱讀的排版。三種優惠的觸達率差距與資料限制、後續驗收條件都完整保留；數字為流量與人數，不含金額。',
+  '15-meta-ads-warroom': '專案實際產出的廣告戰情室，聚焦在判讀方法與上線檢查：固定總額的預算重配實驗設計、判讀順序、來園訊號更新狀態、官網即時健康與 TLS 憑證鏈，以及「這張表能回答什麼、不能回答什麼」的口徑聲明。廣告帳戶結構、受眾設定與所有花費、流量絕對值皆未收錄。',
+  '12-webar-park-guide': '正式上線的園區地圖：定位、景點資訊與即時距離計算。定位座標為園區內的公開地點。AR 實景導航需要手機相機與羅盤，未涵蓋在這支影片裡。',
 }
 
 const BADGE_COLORS = {
@@ -180,13 +194,15 @@ ${body}
 }
 
 function demoBlock(slug) {
-  if (!existsSync(join(ROOT, 'public/videos', `${slug}.mp4`))) return ''
+  // 影片依分類放在 public/videos/<分類>/ 底下，網址也走同一套路徑（見 lib/video-categories.mjs）
+  if (!existsSync(join(ROOT, 'public', videoPath(slug, 'mp4')))) return ''
   const caption = DEMO_NOTES[slug] ?? '實際上線畫面錄製。'
+  const src = (ext) => videoHref(slug, ext)
   return `        <figure class="case-demo">
-          <video controls preload="none" playsinline muted width="1280" height="720" poster="/videos/${slug}.jpg">
-            <source src="/videos/${slug}.webm" type="video/webm" />
-            <source src="/videos/${slug}.mp4" type="video/mp4" />
-            <a href="/videos/${slug}.mp4">下載示範影片</a>
+          <video controls preload="none" playsinline muted width="1280" height="720" poster="${src('jpg')}">
+            <source src="${src('webm')}" type="video/webm" />
+            <source src="${src('mp4')}" type="video/mp4" />
+            <a href="${src('mp4')}">下載示範影片</a>
           </video>
           <figcaption>示範影片（無聲）·&nbsp;${esc(caption)}</figcaption>
         </figure>
@@ -214,9 +230,6 @@ ${demoBlock(slug)}        ${toc}
         <article class="prose">
 ${content}
         </article>
-        <p class="case-source">
-          <a target="_blank" rel="noreferrer" href="${REPO}/tree/master/${slug}">在 GitHub 上看這個案例的原始文件 ↗</a>
-        </p>
         <nav class="case-nav" aria-label="案例導覽">${nav}</nav>
         <p class="case-home"><a href="/#work">← 回作品集總覽</a></p>
       </main>

@@ -171,6 +171,7 @@ function page({ title, description, canonical, ogImage, body }) {
     <link rel="stylesheet" href="/case.css?v=20260912-teal" />
 
     <script type="application/ld+json">${jsonLd}</script>
+    <script src="/ga.js" defer></script>
   </head>
   <body>
     <div class="site-shell">

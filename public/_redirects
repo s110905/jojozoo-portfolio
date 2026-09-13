@@ -1,0 +1,6 @@
+# Cloudflare Pages 預設會把 /foo.html 308 轉址到 /foo。Google Search Console 的
+# 檔案驗證是抓「原始那個 .html 網址」，被轉址就可能驗不過，所以這裡明確指定：
+# 用 200（rewrite，不是轉址）把內容直接送在 .html 網址上。
+#
+# 只有這一條例外，站上其他路徑維持 Pages 的預設行為。
+/google34a8751c307c818b.html  /google34a8751c307c818b  200

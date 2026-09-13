@@ -6,14 +6,10 @@
 
 import { readFile, readdir, writeFile, mkdir } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
-import { execFile } from 'node:child_process'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { promisify } from 'node:util'
 import { marked } from 'marked'
 import { videoHref, videoPath } from './lib/video-categories.mjs'
-
-const run = promisify(execFile)
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST = join(ROOT, 'dist')
@@ -261,21 +257,20 @@ const TODAY = new Date().toISOString().slice(0, 10)
 
 // sitemap 的 lastmod 取「這個頁面的內容來源最後一次 commit 的日期」，而不是建置日期。
 // 以前每次部署都把 18 個網址標成今天全部更新過，包括三個月沒動的案例——對 Google
-// 來說這種 lastmod 不可信，索引排程也不會因此變好。
+// 來說這種 lastmod 不可信。
 //
-// 淺層 clone（部分 CI 只抓最近一個 commit）下所有路徑會得到同一個日期，那就退回到
-// 跟舊行為一樣，不會更糟。真的拿不到就用今天。
-async function lastModified(...paths) {
-  const dates = []
-  for (const path of paths) {
-    try {
-      const { stdout } = await run('git', ['log', '-1', '--format=%cs', '--', path], { cwd: ROOT })
-      const date = stdout.trim()
-      if (/^\d{4}-\d{2}-\d{2}$/.test(date)) dates.push(date)
-    } catch {
-      // 沒有 git 或不是 repo，交給下面的 fallback
-    }
-  }
+// 日期來自 scripts/lastmod.json，由 build-lastmod.mjs 在本機查 git 後產生並進版控。
+// 不在這裡直接查 git 的原因：Cloudflare Pages 用淺層 clone，那邊查出來所有路徑都是
+// 同一個日期（實測過，線上 sitemap 因此只剩一個日期）。查不到的路徑退回建置日期。
+let LASTMOD = {}
+try {
+  LASTMOD = JSON.parse(await readFile(join(ROOT, 'scripts', 'lastmod.json'), 'utf8'))
+} catch {
+  console.warn('讀不到 scripts/lastmod.json，sitemap 的 lastmod 全部退回建置日期')
+}
+
+function lastModified(...paths) {
+  const dates = paths.map((p) => LASTMOD[p.split('\\').join('/')]).filter(Boolean)
   return dates.sort().pop() ?? TODAY
 }
 
@@ -297,7 +292,7 @@ async function main() {
 
   // 首頁的內容來自 React 元件與案例資料，所以看 src/ 與 index.html
   const urls = [
-    { loc: `${SITE}/`, priority: '1.0', lastmod: await lastModified('src', 'index.html') },
+    { loc: `${SITE}/`, priority: '1.0', lastmod: lastModified('src', 'index.html') },
   ]
 
   for (const [i, item] of cases.entries()) {
@@ -329,7 +324,7 @@ async function main() {
 
     await mkdir(join(DIST, 'case', slug), { recursive: true })
     await writeFile(join(DIST, 'case', slug, 'index.html'), html)
-    urls.push({ loc: canonical, priority: '0.8', lastmod: await lastModified(slug) })
+    urls.push({ loc: canonical, priority: '0.8', lastmod: lastModified(slug) })
     console.log(`case/${slug}/`.padEnd(40), `${(html.length / 1024).toFixed(0)} KB`)
 
     // 案例資料夾裡的補充文件（例如成效報告）也一起產頁
@@ -365,7 +360,7 @@ ${subToc.html}
       })
       await mkdir(join(DIST, 'case', slug, sub), { recursive: true })
       await writeFile(join(DIST, 'case', slug, sub, 'index.html'), subHtml)
-      urls.push({ loc: subCanonical, priority: '0.5', lastmod: await lastModified(join(slug, file)) })
+      urls.push({ loc: subCanonical, priority: '0.5', lastmod: lastModified(join(slug, file)) })
       console.log(`case/${slug}/${sub}/`.padEnd(40), `${(subHtml.length / 1024).toFixed(0)} KB`)
     }
   }

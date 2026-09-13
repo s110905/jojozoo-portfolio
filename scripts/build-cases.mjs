@@ -6,10 +6,14 @@
 
 import { readFile, readdir, writeFile, mkdir } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
+import { execFile } from 'node:child_process'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { promisify } from 'node:util'
 import { marked } from 'marked'
 import { videoHref, videoPath } from './lib/video-categories.mjs'
+
+const run = promisify(execFile)
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST = join(ROOT, 'dist')
@@ -128,7 +132,7 @@ function withToc(html) {
   return { html: withIds, toc: `<nav class="case-toc" aria-label="本頁章節"><p>本頁章節</p><ol>${links}</ol></nav>` }
 }
 
-function page({ title, description, canonical, ogImage, body }) {
+function page({ title, description, canonical, ogImage, body, breadcrumb = [] }) {
   const jsonLd = JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'CreativeWork',
@@ -139,6 +143,20 @@ function page({ title, description, canonical, ogImage, body }) {
     author: { '@type': 'Person', name: AUTHOR, url: `${SITE}/` },
     inLanguage: 'zh-Hant',
   })
+
+  // 麵包屑結構化資料：搜尋結果會用它把網址列顯示成「首頁 › 案例名稱」。
+  const breadcrumbLd = breadcrumb.length
+    ? JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: breadcrumb.map((item, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: item.name,
+          item: item.url,
+        })),
+      })
+    : null
 
   return `<!doctype html>
 <html lang="zh-Hant">
@@ -171,7 +189,7 @@ function page({ title, description, canonical, ogImage, body }) {
     <link rel="stylesheet" href="/case.css?v=20260912-teal" />
 
     <script type="application/ld+json">${jsonLd}</script>
-    <script src="/ga.js" defer></script>
+${breadcrumbLd ? `    <script type="application/ld+json">${breadcrumbLd}</script>\n` : ''}    <script src="/ga.js" defer></script>
   </head>
   <body>
     <div class="site-shell">
@@ -239,6 +257,28 @@ ${content}
 
 let CSS_HREF = '/assets/index.css'
 
+const TODAY = new Date().toISOString().slice(0, 10)
+
+// sitemap 的 lastmod 取「這個頁面的內容來源最後一次 commit 的日期」，而不是建置日期。
+// 以前每次部署都把 18 個網址標成今天全部更新過，包括三個月沒動的案例——對 Google
+// 來說這種 lastmod 不可信，索引排程也不會因此變好。
+//
+// 淺層 clone（部分 CI 只抓最近一個 commit）下所有路徑會得到同一個日期，那就退回到
+// 跟舊行為一樣，不會更糟。真的拿不到就用今天。
+async function lastModified(...paths) {
+  const dates = []
+  for (const path of paths) {
+    try {
+      const { stdout } = await run('git', ['log', '-1', '--format=%cs', '--', path], { cwd: ROOT })
+      const date = stdout.trim()
+      if (/^\d{4}-\d{2}-\d{2}$/.test(date)) dates.push(date)
+    } catch {
+      // 沒有 git 或不是 repo，交給下面的 fallback
+    }
+  }
+  return dates.sort().pop() ?? TODAY
+}
+
 async function main() {
   const assets = await readdir(join(DIST, 'assets'))
   CSS_HREF = `/assets/${assets.find((f) => f.endsWith('.css'))}`
@@ -255,7 +295,10 @@ async function main() {
     cases.push({ slug, md, ...extractFrontMatter(md) })
   }
 
-  const urls = [{ loc: `${SITE}/`, priority: '1.0' }]
+  // 首頁的內容來自 React 元件與案例資料，所以看 src/ 與 index.html
+  const urls = [
+    { loc: `${SITE}/`, priority: '1.0', lastmod: await lastModified('src', 'index.html') },
+  ]
 
   for (const [i, item] of cases.entries()) {
     const { slug, title, lead, note, badges, body } = item
@@ -271,6 +314,10 @@ async function main() {
       description: lead || note || title,
       canonical,
       ogImage,
+      breadcrumb: [
+        { name: '首頁', url: `${SITE}/` },
+        { name: title, url: canonical },
+      ],
       body: caseBody({
         index: i + 1,
         total: cases.length,
@@ -282,7 +329,7 @@ async function main() {
 
     await mkdir(join(DIST, 'case', slug), { recursive: true })
     await writeFile(join(DIST, 'case', slug, 'index.html'), html)
-    urls.push({ loc: canonical, priority: '0.8' })
+    urls.push({ loc: canonical, priority: '0.8', lastmod: await lastModified(slug) })
     console.log(`case/${slug}/`.padEnd(40), `${(html.length / 1024).toFixed(0)} KB`)
 
     // 案例資料夾裡的補充文件（例如成效報告）也一起產頁
@@ -299,6 +346,11 @@ async function main() {
         description: front.lead || front.note || front.title,
         canonical: subCanonical,
         ogImage,
+        breadcrumb: [
+          { name: '首頁', url: `${SITE}/` },
+          { name: title, url: canonical },
+          { name: front.title, url: subCanonical },
+        ],
         body: `      <main id="main" class="case-page section">
         <p class="eyebrow"><a href="/case/${slug}/">${esc(title)}</a> / 補充文件</p>
         <h1>${esc(front.title)}</h1>
@@ -313,23 +365,42 @@ ${subToc.html}
       })
       await mkdir(join(DIST, 'case', slug, sub), { recursive: true })
       await writeFile(join(DIST, 'case', slug, sub, 'index.html'), subHtml)
-      urls.push({ loc: subCanonical, priority: '0.5' })
+      urls.push({ loc: subCanonical, priority: '0.5', lastmod: await lastModified(join(slug, file)) })
       console.log(`case/${slug}/${sub}/`.padEnd(40), `${(subHtml.length / 1024).toFixed(0)} KB`)
     }
   }
 
-  const today = new Date().toISOString().slice(0, 10)
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map((u) => `  <url>
     <loc>${u.loc}</loc>
-    <lastmod>${today}</lastmod>
+    <lastmod>${u.lastmod}</lastmod>
     <priority>${u.priority}</priority>
   </url>`).join('\n')}
 </urlset>
 `
   await writeFile(join(DIST, 'sitemap.xml'), sitemap)
+
+  // 自訂 404：Cloudflare Pages 找不到路徑時會送這一頁。放在這裡產生是因為要沿用
+  // vite build 產出的 hashed CSS 檔名，跟案例頁走同一套外觀。
+  const notFound = page({
+    title: '找不到這個頁面',
+    description: '你要找的頁面不存在，可能是網址輸錯或該頁已經移動。',
+    canonical: `${SITE}/404`,
+    ogImage: `${SITE}/images/og-cover-v2.jpg`,
+    body: `      <main id="main" class="case-page section">
+        <p class="eyebrow">404</p>
+        <h1>找不到這個頁面</h1>
+        <p class="case-lead">網址可能輸錯了，或這一頁已經移動。從下面兩個入口都能回到正軌。</p>
+        <p class="case-home"><a href="/">← 回首頁</a> ・ <a href="/#work">看全部案例</a></p>
+      </main>
+`,
+  })
+  await writeFile(join(DIST, '404.html'), notFound)
+
+  const dates = [...new Set(urls.map((u) => u.lastmod))].sort()
   console.log(`\n${cases.length} 個案例頁，sitemap 收錄 ${urls.length} 個網址`)
+  console.log(`lastmod 跨 ${dates.length} 個日期（${dates[0]} ~ ${dates[dates.length - 1]}），404 頁已產生`)
 }
 
 main()

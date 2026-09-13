@@ -226,3 +226,32 @@ export const projects: Project[] = [
     result: '活動人潮能導向指定消費點並量化核銷。',
   },
 ]
+
+// 首頁完整案例庫上方那條產品縮圖的順序。挑的是有錄示範影片、因此有海報圖的 14 個案例
+// （06 與 11 沒錄，不在此列），縮圖由 scripts/build-thumbs.mjs 從海報圖壓出來。
+// 排序是刻意的：先放畫面最完整、最能代表「產品」的幾個，再帶到活動與自動化。
+export const stripSlugs = [
+  '01-summer-camp',
+  '14-anniversary-find-four',
+  '13-customer-service-automation',
+  '09-jojozoocart',
+  '03-hotel-partner-system',
+  '02-payment-system',
+  '12-webar-park-guide',
+  '05-ticket-price-calculator',
+  '04-children-drawing-contest',
+  '10-line-lucky-draw',
+  '07-kuangsan-collaboration',
+  '15-meta-ads-warroom',
+  '16-seo-analytics',
+  '08-pos-autoclicker',
+]
+
+const bySlug = new Map(projects.map(project => [project.slug, project]))
+
+/** 產品縮圖條要顯示的案例，依 stripSlugs 的順序。 */
+export const stripProjects = stripSlugs
+  .map(slug => bySlug.get(slug))
+  .filter((project): project is Project => Boolean(project))
+
+export const thumbSrc = (slug: string) => `/images/thumbs/${slug}.webp`

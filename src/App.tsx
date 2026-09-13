@@ -1,6 +1,6 @@
 import { ArrowRight, ArrowUpRight, Menu, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import { categoryLabels, filterOptions, projects, type ProjectFilter } from './data/projects'
+import { categoryLabels, filterOptions, projects, stripProjects, thumbSrc, type ProjectFilter } from './data/projects'
 import './portfolio.css'
 
 const campImage = '/images/cases/01-summer-camp/result.webp'
@@ -48,10 +48,28 @@ function Header() {
   )
 }
 
+// 完整案例庫上方那條產品縮圖，接在三張精選大卡之後、分類篩選列之前，
+// 當作從「精選」轉到「全部」的視覺銜接。原本 hero 頂端的 211px 字標已移除。
+function ProductStrip() {
+  return (
+    <div className="product-strip">
+      <ul aria-label="案例作品縮圖">
+        {stripProjects.map(project => (
+          <li key={project.slug}>
+            <a href={caseUrl(project.slug)}>
+              <img src={thumbSrc(project.slug)} alt="" width="480" height="270" loading="lazy" decoding="async" />
+              <span>{project.title}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
 function Hero() {
   return (
     <section className="portfolio-hero page-width" id="top" aria-labelledby="intro-title">
-      <p className="hero-name" aria-label="Toyo Chang">Toyo Chang.</p>
       <div className="hero-stage">
         <div className="intro-copy">
           <h1 id="intro-title">把想法，<br />做成真的能用的產品。</h1>
@@ -147,6 +165,7 @@ export default function App() {
         <section className="portfolio-work page-width" id="work" aria-labelledby="work-title">
           <h2 id="work-title">做過的事，<br className="mobile-break" />比頭銜更有說服力。</h2>
           <SelectedWork />
+          <ProductStrip />
           <ProjectIndex />
         </section>
         <About />

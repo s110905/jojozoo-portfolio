@@ -263,7 +263,7 @@ async function main() {
     const { html: content, toc } = withToc(parsed)
     const ogImage = existsSync(join(ROOT, 'public/images/cases', slug, 'og.jpg'))
       ? `${SITE}/images/cases/${slug}/og.jpg`
-      : `${SITE}/images/og-cover.jpg`
+      : `${SITE}/images/og-cover-v2.jpg`
     const canonical = `${SITE}/case/${slug}/`
 
     const html = page({

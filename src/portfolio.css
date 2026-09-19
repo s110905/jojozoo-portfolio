@@ -38,8 +38,11 @@
 .intro-copy { position: relative; z-index: 2; padding-bottom: 22px; }
 .intro-copy h1 { font-size: clamp(28px, 3.05vw, 44px); line-height: 1.42; letter-spacing: -.06em; font-weight: 800; }
 .intro-copy > p { margin-top: 22px; font-size: 16px; line-height: 1.9; max-width: 430px; color: var(--portfolio-muted); }
-.portfolio-button { display: inline-flex; align-items: center; justify-content: center; gap: 16px; margin-top: 28px; min-height: 50px; padding: 13px 25px; border-radius: 30px; background: var(--portfolio-accent); color: #fff; font-size: 15px; font-weight: 600; transition: background .2s, transform .2s; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.portfolio-button { display: inline-flex; align-items: center; justify-content: center; gap: 16px; min-height: 50px; padding: 13px 25px; border: 1px solid var(--portfolio-accent); border-radius: 30px; background: var(--portfolio-accent); color: #fff; font-size: 15px; font-weight: 600; transition: background .2s, color .2s, transform .2s; }
 .portfolio-button:hover { background: #105344; transform: translateY(-2px); }
+.portfolio-button-secondary { background: #fff; color: var(--portfolio-accent); }
+.portfolio-button-secondary:hover { background: var(--portfolio-soft); color: #105344; }
 .project-composition { position: relative; min-width: 0; height: 430px; margin-top: -35px; }
 .desktop-mockup { position: absolute; left: 0; top: 30px; width: 82%; padding: 9px; background: #19202b; border-radius: 12px; transform: rotate(-7deg); box-shadow: 0 24px 30px #1838321c; transition: transform .3s; }
 .desktop-mockup:hover { transform: rotate(-4deg) translateY(-5px); }
@@ -158,7 +161,8 @@
   .intro-copy { padding: 32px 0 0; }
   .intro-copy h1 { font-size: clamp(25px, 6.9vw, 38px); line-height: 1.4; letter-spacing: -.055em; }
   .intro-copy > p { margin-top: 16px; font-size: 15px; max-width: 350px; }
-  .portfolio-button { margin-top: 20px; min-height: 48px; }
+  .hero-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 20px; }
+  .portfolio-button { min-height: 48px; gap: 9px; padding-inline: 14px; }
   .project-composition { height: clamp(250px, 62vw, 400px); margin: 10px 8px 0; }
   .desktop-mockup { top: 28px; left: 2%; width: 80%; padding: 6px; border-radius: 8px; }
   .device-toolbar { height: 17px; }

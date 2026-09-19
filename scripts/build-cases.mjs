@@ -2,7 +2,7 @@
 // 並輸出涵蓋首頁與所有案例頁的 sitemap.xml。
 //
 // 在 `vite build` 之後執行，因為要沿用它產出的 hashed CSS 檔名。
-// 案例頁不含任何 JS，樣式全部走外部檔案，符合站上的 CSP。
+// 案例頁不含應用程式 bundle 或 inline JS；樣式與 GA 互動都走外部檔案，符合站上的 CSP。
 
 import { readFile, readdir, writeFile, mkdir } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
@@ -15,6 +15,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST = join(ROOT, 'dist')
 const SITE = 'https://toyo-chang.pages.dev'
 const AUTHOR = '張文豪 Toyo Chang'
+const CONTACT_EMAIL = 's110905toyo@gmail.com'
 const CASE_DIR = /^\d\d-/
 
 // 有 public/videos/<slug>.mp4 的案例會自動長出示範影片區塊。
@@ -234,6 +235,7 @@ function caseBody({ index, total, title, lead, note, badges, toc, content, slug,
     prev ? `<a class="case-nav-link" href="/case/${prev.slug}/"><small>上一個案例</small>${esc(prev.title)}</a>` : '<span></span>',
     next ? `<a class="case-nav-link case-nav-next" href="/case/${next.slug}/"><small>下一個案例</small>${esc(next.title)}</a>` : '<span></span>',
   ].join('')
+  const contactSubject = encodeURIComponent(`作品集案例諮詢：${title}`)
 
   return `      <main id="main" class="case-page section">
         <p class="eyebrow">CASE ${String(index).padStart(2, '0')} / ${String(total).padStart(2, '0')}</p>
@@ -245,6 +247,14 @@ ${demoBlock(slug)}        ${toc}
         <article class="prose">
 ${content}
         </article>
+        <section class="case-contact" aria-labelledby="case-contact-title">
+          <p class="eyebrow">NEXT PROJECT</p>
+          <h2 id="case-contact-title">你也有類似流程想改善？</h2>
+          <p>把目前的做法、卡點或想達成的結果寄給我，我們可以先從問題怎麼拆開始聊。</p>
+          <a class="case-contact-link" href="mailto:${CONTACT_EMAIL}?subject=${contactSubject}" data-ga-event="contact_click" data-ga-entry-point="case_cta" data-ga-case-slug="${esc(slug)}">
+            寄信聊聊 <span aria-hidden="true">→</span>
+          </a>
+        </section>
         <nav class="case-nav" aria-label="案例導覽">${nav}</nav>
         <p class="case-home"><a href="/#work">← 回作品集總覽</a></p>
       </main>

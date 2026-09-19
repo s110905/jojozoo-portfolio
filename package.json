@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs && node scripts/build-cases.mjs",
     "preview": "vite preview",
+    "test:analytics": "node scripts/test-analytics.mjs",
+    "test:ui": "node scripts/test-ui.mjs",
     "typecheck": "tsc -b --pretty false"
   },
   "dependencies": {

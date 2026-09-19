@@ -7,6 +7,7 @@ const campImage = '/images/cases/01-summer-camp/result.webp'
 const huntImage = '/videos/行銷活動/14-anniversary-find-four.jpg'
 const reviewImage = '/videos/自動化與AI/13-customer-service-automation.jpg'
 const caseUrl = (slug: string) => `/case/${slug}/`
+const contactHref = 'mailto:s110905toyo@gmail.com?subject=%E4%BD%9C%E5%93%81%E9%9B%86%E5%90%88%E4%BD%9C%E8%AB%AE%E8%A9%A2'
 
 // GA4 的 page_view 只回答「有多少人來」，回答不了作品集真正的問題：他們看了哪個案例、
 // 從哪個入口進去的。首頁有四個入口（hero 裝置圖、精選大卡、縮圖條、清單列），
@@ -15,9 +16,19 @@ const caseUrl = (slug: string) => `/case/${slug}/`
 // 送出後頁面就要跳走，靠 gtag 預設的 sendBeacon 傳輸；ga.js 沒載入（本機開發、
 // 被擋掉）時 window.gtag 是 undefined，optional call 直接跳過。
 type EntryPoint = 'hero_mockup' | 'featured_card' | 'thumb_strip' | 'index_list'
+type ContactEntryPoint = 'hero_cta' | 'contact_section'
+type AnalyticsEvent = 'case_click' | 'contact_click' | 'filter_used'
+
+const trackEvent = (eventName: AnalyticsEvent, params: Record<string, string | number>) => {
+  window.gtag?.('event', eventName, params)
+}
 
 const trackCaseClick = (slug: string, entry: EntryPoint) => {
-  window.gtag?.('event', 'case_click', { case_slug: slug, entry_point: entry })
+  trackEvent('case_click', { case_slug: slug, entry_point: entry })
+}
+
+const trackContactClick = (entryPoint: ContactEntryPoint) => {
+  trackEvent('contact_click', { entry_point: entryPoint, transport_type: 'beacon' })
 }
 
 const steps = [
@@ -87,7 +98,10 @@ function Hero() {
         <div className="intro-copy">
           <h1 id="intro-title">把想法，<br />做成真的能用的產品。</h1>
           <p>從行銷現場出發，用技術與 AI 解決營運問題。</p>
-          <a className="portfolio-button" href="#work">探索我的作品 <ArrowRight size={19} aria-hidden="true" /></a>
+          <div className="hero-actions">
+            <a className="portfolio-button" href="#work">探索我的作品 <ArrowRight size={19} aria-hidden="true" /></a>
+            <a className="portfolio-button portfolio-button-secondary" href={contactHref} onClick={() => trackContactClick('hero_cta')}>聊聊你的需求 <ArrowUpRight size={19} aria-hidden="true" /></a>
+          </div>
         </div>
         <div className="project-composition" aria-label="夏令營報名與園區集點系統實際畫面">
           <a className="desktop-mockup" href={caseUrl('01-summer-camp')} onClick={() => trackCaseClick('01-summer-camp', 'hero_mockup')} aria-label="查看夏令營報名系統案例">
@@ -130,11 +144,18 @@ function SelectedWork() {
 function ProjectIndex() {
   const [filter, setFilter] = useState<ProjectFilter>('all')
   const visibleProjects = filter === 'all' ? projects : projects.filter(project => project.category === filter)
+  const changeFilter = (nextFilter: ProjectFilter) => {
+    if (nextFilter !== filter) {
+      const resultsCount = nextFilter === 'all' ? projects.length : projects.filter(project => project.category === nextFilter).length
+      trackEvent('filter_used', { filter_value: nextFilter, results_count: resultsCount })
+    }
+    setFilter(nextFilter)
+  }
   return (
     <div className="project-index" aria-label="完整案例庫">
       <div className="index-toolbar">
         <div className="index-filters" role="group" aria-label="案例分類">
-          {filterOptions.map(option => <button key={option.value} type="button" aria-pressed={filter === option.value} onClick={() => setFilter(option.value)}>
+          {filterOptions.map(option => <button key={option.value} type="button" aria-pressed={filter === option.value} onClick={() => changeFilter(option.value)}>
             {option.label}<span aria-hidden="true">{option.value === 'all' ? projects.length : projects.filter(project => project.category === option.value).length}</span>
           </button>)}
         </div>
@@ -183,7 +204,7 @@ export default function App() {
         </section>
         <About />
         <section className="portfolio-contact" id="contact">
-          <div className="page-width"><h2>一起，把下一個想法做出來。</h2><a href="mailto:s110905toyo@gmail.com">s110905toyo@gmail.com <ArrowUpRight aria-hidden="true" /></a></div>
+          <div className="page-width"><h2>一起，把下一個想法做出來。</h2><a href={contactHref} onClick={() => trackContactClick('contact_section')}>s110905toyo@gmail.com <ArrowUpRight aria-hidden="true" /></a></div>
         </section>
       </main>
       <footer className="portfolio-footer page-width"><a className="wordmark" href="#top">Toyo Chang</a><span>© {new Date().getFullYear()} Toyo Chang</span></footer>

@@ -19,4 +19,27 @@ if (!IS_LOCAL && GA_ID.indexOf('G-X') !== 0) {
   }
   window.gtag('js', new Date())
   window.gtag('config', GA_ID)
+
+  // 靜態案例頁沒有 React runtime，以 data-ga-* 宣告事件，集中由這裡送出。
+  // 只接受列在下方的非個資參數，避免 DOM 上的其他 data attribute 意外進入 GA4。
+  document.addEventListener('click', function (event) {
+    var source = event.target
+    if (!source || typeof source.closest !== 'function') return
+
+    var target = source.closest('[data-ga-event]')
+    if (!target) return
+
+    var eventName = target.getAttribute('data-ga-event')
+    var caseSlug = target.getAttribute('data-ga-case-slug')
+    var entryPoint = target.getAttribute('data-ga-entry-point')
+    if (eventName !== 'contact_click') return
+    if (entryPoint !== 'case_cta') return
+    if (!caseSlug || !/^\d{2}-[a-z0-9-]+$/.test(caseSlug)) return
+
+    window.gtag('event', eventName, {
+      case_slug: caseSlug,
+      entry_point: entryPoint,
+      transport_type: 'beacon',
+    })
+  })
 }

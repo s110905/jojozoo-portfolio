@@ -166,6 +166,33 @@
 .case-source a { color: var(--muted); }
 .case-source a:hover { color: var(--accent); }
 
+.case-contact {
+  margin-top: 64px;
+  padding: 32px;
+  border: 1px solid #bfd8ca;
+  border-radius: 14px;
+  background: var(--soft);
+}
+.case-contact h2 { margin: 12px 0 0; color: var(--text); font-size: clamp(24px, 3.4vw, 30px); letter-spacing: -0.025em; }
+.case-contact > p:not(.eyebrow) { max-width: 38em; margin: 12px 0 0; color: var(--muted); font-size: 15px; line-height: 1.8; }
+.case-contact-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 48px;
+  margin-top: 22px;
+  padding: 12px 21px;
+  border: 1px solid var(--accent);
+  border-radius: 99px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.case-contact-link:hover { background: #105344; transform: translateY(-2px); }
+
 .case-nav { margin-top: 56px; padding-top: 32px; display: flex; gap: 16px; justify-content: space-between; border-top: 1px solid var(--line); }
 .case-nav-link {
   flex: 0 1 46%;
@@ -190,6 +217,8 @@
   .case-header { width: calc(100% - 32px); height: 72px; }
   .case-page { width: calc(100% - 32px); padding-block: 34px 72px; }
   .prose h2 { margin-top: 48px; }
+  .case-contact { margin-top: 48px; padding: 24px 20px; }
+  .case-contact-link { width: 100%; }
   .case-nav { flex-direction: column; }
   .case-nav-link { flex: 1 1 auto; }
   .case-nav-next { text-align: left; }

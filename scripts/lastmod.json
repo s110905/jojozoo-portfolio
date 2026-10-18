@@ -1,5 +1,5 @@
 {
-  "src": "2026-09-19",
+  "src": "2026-10-18",
   "index.html": "2026-09-13",
   "01-summer-camp": "2026-08-03",
   "01-summer-camp/marketing_project_report.md": "2026-05-01",
@@ -14,8 +14,10 @@
   "10-line-lucky-draw": "2026-08-09",
   "11-mothersday-lottery": "2026-08-09",
   "12-webar-park-guide": "2026-08-09",
-  "13-customer-service-automation": "2026-08-09",
-  "14-anniversary-find-four": "2026-09-11",
-  "15-meta-ads-warroom": "2026-09-19",
-  "16-seo-analytics": "2026-09-11"
+  "13-customer-service-automation": "2026-10-18",
+  "14-anniversary-find-four": "2026-10-10",
+  "15-meta-ads-warroom": "2026-10-18",
+  "16-seo-analytics": "2026-10-18",
+  "17-linegate-ticketing": "2026-10-18",
+  "18-tourism-data-analysis": "2026-10-10"
 }

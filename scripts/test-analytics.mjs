@@ -94,7 +94,14 @@ assert.equal(
 
 const caseRoot = join(root, 'dist', 'case')
 const caseDirectories = (await readdir(caseRoot, { withFileTypes: true })).filter(entry => entry.isDirectory())
-assert.equal(caseDirectories.length, 16, '應產生 16 個主案例目錄')
+const sourceCases = (await readdir(root, { withFileTypes: true }))
+  .filter(entry => entry.isDirectory() && /^\d\d-/.test(entry.name))
+  .map(entry => entry.name).sort()
+assert.ok(sourceCases.length > 0, '應有可建置的案例來源')
+const homepage = await readFile(join(root, 'dist', 'index.html'), 'utf8')
+const homepageCases = [...new Set([...homepage.matchAll(/href="\/case\/([^"/]+)\/"/g)].map(match => match[1]))].sort()
+assert.deepEqual(sourceCases, homepageCases, '每個首頁案例連結都應有來源，且每份案例來源都應有首頁入口')
+assert.deepEqual(caseDirectories.map(entry => entry.name).sort(), sourceCases, '案例產物應完整對應來源目錄')
 
 for (const directory of caseDirectories) {
   const html = await readFile(join(caseRoot, directory.name, 'index.html'), 'utf8')

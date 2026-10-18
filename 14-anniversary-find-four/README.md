@@ -4,9 +4,9 @@
 
 ### 免登入就能參加的園區尋寶活動，把掃碼、集點、進度找回、來源歸因與現場兌獎整合成一條流程
 
-> 已完成正式部署與活動前驗證：50 組 QR 全數更新，正式環境的建立進度、來源選擇、首次掃描與重複掃描往返均通過。
+> 2026 年 9 月活動已結束：累計 4,190 次領獎紀錄與 2,416 份問卷。系統完成活動前的 50 組 QR 驗證，活動後再以問卷與兌獎資料檢討遊客體驗。
 
-![Project Status](https://img.shields.io/badge/Status-Deployed-brightgreen)
+![Project Status](https://img.shields.io/badge/Status-Completed-brightgreen)
 ![Tech Stack](https://img.shields.io/badge/Stack-Next.js%20%7C%20Cloudflare%20%7C%20D1-blue)
 ![Focus](https://img.shields.io/badge/Focus-Event%20Experience-orange)
 
@@ -80,6 +80,17 @@
 * 正式 D1 的 50 組新雜湊全數命中，舊雜湊命中數為 0。
 * TypeScript、ESLint、production build 與差異格式檢查全數通過。
 * 5 頁 QR 印刷 PDF 已逐頁渲染，抽查首頁與末頁沒有裁切。
+
+## 活動成果與下一檔改善
+
+2026 年 9 月 1 日至 30 日活動結束後，將系統紀錄與問卷整理為結案分析：
+
+* **4,190 次領獎紀錄**：這是領獎次數，活動可重玩，不能當成不重複的參加人數。
+* **2,416 份問卷**：平均滿意度為 **3.88／5**，其中 **70.4%** 回答滿意或非常滿意。
+* **87.0% 填答者表示逛到更多園區**：作為活動探索體驗的回饋，不推估為全體遊客的行為。
+* **25.1% 填答者反映 QR 操作不順**：將辨識體驗與路線負擔列入下次改善依據；結案分析不等於這些問題已修復。
+
+問卷偏向已達活動門檻的參加者，完整掃描資料尚未取得，因此不以現有資料計算整體參與率或全程完成率。
 
 ---
 

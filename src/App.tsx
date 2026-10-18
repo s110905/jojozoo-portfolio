@@ -131,11 +131,11 @@ function SelectedWork() {
       </a>
       <a className="exhibit exhibit-side" href={caseUrl('14-anniversary-find-four')} onClick={() => trackCaseClick('14-anniversary-find-four', 'featured_card')}>
         <div className="exhibit-image hunt-exhibit"><div className="exhibit-phone"><img src={huntImage} alt="園區尋4集點系統" width="1280" height="720" loading="lazy" /></div></div>
-        <div className="exhibit-copy"><h3>4 周年尋4大作戰</h3><p>50 組 QR 的園區集點體驗</p><ArrowUpRight aria-hidden="true" /></div>
+        <div className="exhibit-copy"><h3>4 周年尋4大作戰</h3><p>4,190 次領獎，2,416 份體驗問卷</p><ArrowUpRight aria-hidden="true" /></div>
       </a>
       <a className="exhibit exhibit-side" href={caseUrl('13-customer-service-automation')} onClick={() => trackCaseClick('13-customer-service-automation', 'featured_card')}>
         <div className="exhibit-image review-exhibit"><img src={reviewImage} alt="AI 客服調度台示範畫面" width="1280" height="720" loading="lazy" /></div>
-        <div className="exhibit-copy"><h3>Google 評論 AI 客服</h3><p>7,157 則評論，人工保留發布權</p><ArrowUpRight aria-hidden="true" /></div>
+        <div className="exhibit-copy"><h3>Google 評論 AI 客服</h3><p>100 則評論驗收，人工保留發布權</p><ArrowUpRight aria-hidden="true" /></div>
       </a>
     </div>
   )

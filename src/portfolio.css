@@ -62,6 +62,21 @@
 .portfolio-work { padding-block: 38px 90px; }
 .portfolio-work > h2 { font-size: clamp(29px, 3.15vw, 45px); letter-spacing: -.055em; line-height: 1.45; margin-bottom: 32px; }
 .mobile-break { display: none; }
+.advertising-case { display: grid; grid-template-columns: 1.05fr 1fr; gap: 44px; align-items: center; padding: 36px; margin-bottom: 36px; border: 1px solid var(--portfolio-line); border-radius: 8px; background: var(--portfolio-soft); }
+.advertising-copy, .advertising-results { min-width: 0; }
+.advertising-eyebrow { color: var(--portfolio-accent); font-size: 13px; font-weight: 600; line-height: 1.7; }
+.advertising-copy h3 { margin-top: 10px; font-size: clamp(26px, 2.7vw, 36px); line-height: 1.4; letter-spacing: -.04em; }
+.advertising-description { margin-top: 14px !important; font-size: 15px; line-height: 1.9; color: var(--portfolio-muted); }
+.advertising-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 24px; }
+.advertising-contact { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; color: var(--portfolio-accent); font-size: 14px; text-decoration: underline; text-underline-offset: 5px; }
+.advertising-contact svg { flex-shrink: 0; }
+.advertising-period { padding-bottom: 16px; border-bottom: 1px solid var(--portfolio-line); color: var(--portfolio-muted); font-size: 13px; line-height: 1.7; }
+.advertising-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 18px; margin: 22px 0; }
+.advertising-metrics > div:last-child { grid-column: 1 / -1; }
+.advertising-metrics dt { color: var(--portfolio-muted); font-size: 13px; line-height: 1.7; }
+.advertising-metrics dd { margin: 6px 0 0; font-size: clamp(27px, 3vw, 38px); font-weight: 700; line-height: 1.25; letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
+.advertising-metrics dd span { font-size: 14px; font-weight: 400; letter-spacing: 0; }
+.advertising-note { color: var(--portfolio-muted); font-size: 12px; line-height: 1.8; }
 .selected-exhibits { display: grid; grid-template-columns: 1.03fr 1fr; grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 22px 28px; }
 .exhibit { min-width: 0; }
 .exhibit-main { grid-row: span 2; }
@@ -176,6 +191,12 @@
   .portfolio-work { padding-block: 26px 54px; }
   .portfolio-work > h2 { font-size: 28px; margin-bottom: 24px; }
   .mobile-break { display: initial; }
+  .advertising-case { grid-template-columns: 1fr; gap: 28px; padding: 24px 20px; margin-bottom: 30px; }
+  .advertising-copy h3 { font-size: 28px; }
+  .advertising-description { font-size: 14px; }
+  .advertising-actions { align-items: stretch; flex-direction: column; gap: 8px; }
+  .advertising-contact { justify-content: center; }
+  .advertising-metrics { gap: 20px 12px; }
   .selected-exhibits { grid-template-columns: 1fr; gap: 28px; }
   .exhibit-main { grid-row: auto; }
   .camp-exhibit { min-height: 0; aspect-ratio: 1.4; padding: 26px 18px; }

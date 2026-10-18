@@ -141,6 +141,31 @@ function SelectedWork() {
   )
 }
 
+function AdvertisingCase() {
+  return (
+    <section className="advertising-case" aria-labelledby="advertising-case-title">
+      <div className="advertising-copy">
+        <p className="advertising-eyebrow">廣告投放實績 · 2026 年 9 月</p>
+        <h3 id="advertising-case-title">Meta 廣告代操</h3>
+        <p className="advertising-description">為休閒園區規劃 Facebook／Instagram 活動廣告，從文案與素材整理、受眾與預算配置，到網站追蹤與成效判讀。</p>
+        <div className="advertising-actions">
+          <a className="portfolio-button" href="/reports/meta-ads-2026-09/" onClick={() => trackCaseClick('15-meta-ads-warroom', 'featured_card')}>查看 9 月完整案例 <ArrowUpRight size={18} aria-hidden="true" /></a>
+          <a className="advertising-contact" href="mailto:s110905toyo@gmail.com?subject=Meta%20%E5%BB%A3%E5%91%8A%E5%90%88%E4%BD%9C%E8%AB%AE%E8%A9%A2">洽談廣告合作 <ArrowRight size={18} aria-hidden="true" /></a>
+        </div>
+      </div>
+      <div className="advertising-results">
+        <p className="advertising-period">整月成果｜2026/09/01–09/30</p>
+        <dl className="advertising-metrics">
+          <div><dt>廣告花費</dt><dd><span>NT$</span> 18,788</dd></div>
+          <div><dt>到站次數</dt><dd>7,451 <span>次</span></dd></div>
+          <div><dt>平均每次到站成本</dt><dd><span>約 NT$</span> 2.52</dd></div>
+        </dl>
+        <p className="advertising-note">到站為 Meta 記錄的連結頁面瀏覽次數，非不重複人數。本案例未含訂單與營收資料。</p>
+      </div>
+    </section>
+  )
+}
+
 function ProjectIndex() {
   const [filter, setFilter] = useState<ProjectFilter>('all')
   const visibleProjects = filter === 'all' ? projects : projects.filter(project => project.category === filter)
@@ -198,6 +223,7 @@ export default function App() {
         <Hero />
         <section className="portfolio-work page-width" id="work" aria-labelledby="work-title">
           <h2 id="work-title">做過的事，<br className="mobile-break" />比頭銜更有說服力。</h2>
+          <AdvertisingCase />
           <SelectedWork />
           <ProductStrip />
           <ProjectIndex />

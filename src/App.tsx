@@ -148,6 +148,7 @@ function AdvertisingCase() {
         <p className="advertising-eyebrow">廣告投放實績 · 2026 年 9 月</p>
         <h3 id="advertising-case-title">Meta 廣告代操</h3>
         <p className="advertising-description">為休閒園區規劃 Facebook／Instagram 活動廣告，從文案與素材整理、受眾與預算配置，到網站追蹤與成效判讀。</p>
+        <p className="advertising-description"><a className="advertising-contact" href="/reports/meta-ads-2026-09/#services">廣告代操｜月費合作・短期活動檔期 <ArrowRight size={18} aria-hidden="true" /></a></p>
         <div className="advertising-actions">
           <a className="portfolio-button" href="/reports/meta-ads-2026-09/" onClick={() => trackCaseClick('15-meta-ads-warroom', 'featured_card')}>查看 9 月完整案例 <ArrowUpRight size={18} aria-hidden="true" /></a>
           <a className="advertising-contact" href="mailto:s110905toyo@gmail.com?subject=Meta%20%E5%BB%A3%E5%91%8A%E5%90%88%E4%BD%9C%E8%AB%AE%E8%A9%A2">洽談廣告合作 <ArrowRight size={18} aria-hidden="true" /></a>

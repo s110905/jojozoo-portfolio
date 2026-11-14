@@ -38,6 +38,15 @@ const steps = [
   ['持續驗證', '根據回饋持續優化。'],
 ]
 
+// 「關於」區塊的廣告經歷。只放平台、檔期、分工與判讀方式；金額與成效數字只引用
+// 9 月已公開的報告，進行中的檔期與帳戶識別資訊不寫在這裡。
+const adExperience = [
+  ['平台', 'Meta（Facebook／Instagram）與 Google Ads（YouTube 影片）。'],
+  ['檔期', '2026 年 9 月周年慶、10 月國慶與萬聖、11 月雙 11，以及每月常態曝光。'],
+  ['負責範圍', '文案、靜態圖與直式影片素材，受眾與預算配置，GTM／GA4／Pixel 追蹤設定，上線前檢查與每日成效判讀。'],
+  ['做法', '廣告先以暫停狀態建立，讀回設定無誤才啟用；花費、到站與官網行為集中在自建的戰情室判讀。沒有訂單資料時不報 ROAS。'],
+]
+
 function Header() {
   const [open, setOpen] = useState(false)
   const trigger = useRef<HTMLButtonElement>(null)
@@ -204,8 +213,18 @@ function About() {
           <h2>懂現場，<br />也動手做。</h2>
           <div className="about-text">
             <p>我的起點是行銷企劃。每天在現場看見報名、核銷、對帳、客服與報表的摩擦，於是開始用技術逐一解決。</p>
+            <p>行銷這一端我也自己下場：為休閒園區操作 Meta 與 YouTube 廣告，從素材、受眾、追蹤到成效判讀一手處理，所以做系統時知道流量從哪裡來、該量什麼。</p>
             <p>現在，我專注在商業與技術之間，把模糊需求轉成能落地的 MarTech 與自動化產品。AI 加速執行，問題定義、架構判斷與驗證責任在我。</p>
           </div>
+        </div>
+        <div className="about-ads">
+          <div className="about-ads-head">
+            <h3 id="about-ads-title">廣告投放經歷</h3>
+            <a className="advertising-contact" href="/reports/meta-ads-2026-09/">查看 9 月完整案例 <ArrowRight size={18} aria-hidden="true" /></a>
+          </div>
+          <dl aria-labelledby="about-ads-title">
+            {adExperience.map(([term, description]) => <div key={term}><dt>{term}</dt><dd>{description}</dd></div>)}
+          </dl>
         </div>
         <ol className="portfolio-process" aria-label="我的工作方法" id="method">
           {steps.map(([title, description], index) => <li key={title}><span aria-hidden="true">{index + 1}</span><div><h3>{title}</h3><p>{description}</p></div></li>)}

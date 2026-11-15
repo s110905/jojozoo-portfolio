@@ -172,6 +172,18 @@ function AdvertisingCase() {
         </dl>
         <p className="advertising-note">到站為 Meta 記錄的連結頁面瀏覽次數，非不重複人數。本案例未含訂單與營收資料。</p>
       </div>
+      <div className="advertising-measure">
+        <div className="advertising-measure-copy">
+          <p className="advertising-eyebrow">成效量測機制</p>
+          <h4>沒有訂單資料，也看得出人從哪個入口來</h4>
+          <p>來源跟著 LINE 登記走到現場報到，或在現場直接問來源。兩檔活動實測。</p>
+        </div>
+        <dl className="advertising-measure-stats">
+          <div><dt>活動登記來自廣告入口</dt><dd>33.3%</dd></div>
+          <div><dt>現場問答自陳廣告來源</dt><dd>22.7%</dd></div>
+        </dl>
+        <a className="portfolio-button portfolio-button-secondary" href={caseUrl('20-campaign-measurement')} onClick={() => trackCaseClick('20-campaign-measurement', 'featured_card')}>看成效怎麼算 <ArrowRight size={18} aria-hidden="true" /></a>
+      </div>
     </section>
   )
 }

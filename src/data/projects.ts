@@ -72,6 +72,21 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: '20-campaign-measurement',
+    title: '活動成效量測機制',
+    category: 'marketing',
+    status: '兩檔實測',
+    proof: '每組登記都帶來源，廣告入口占登記 33.3%',
+    problem: '第三方售票平台不回傳訂單，廣告只看得到點擊與進站，無法回答有沒有把人帶進園區。',
+    solution: '做成兩套可重複使用的量測：現場來源問答，以及來源參數隨 LINE 登記寫入邀請券、現場報到後由戰情室依來源彙總。',
+    result: '9 月周年慶以現場問答取得來源占比，回答率 72.6%；10 月萬聖每組登記可依入口拆解，並由現場人員核實到場人數。不含訂單營收，不宣稱增量。',
+    metrics: [
+      { value: '33.3%', label: '登記來自廣告入口' },
+      { value: '22.7%', label: '現場自陳廣告來源' },
+      { value: '72.6%', label: '來源問答回答率' },
+    ],
+  },
+  {
     slug: '16-seo-analytics',
     title: '官網 SEO 與 GA4 成效分析',
     category: 'marketing',
@@ -105,7 +120,7 @@ export const projects: Project[] = [
     proof: '年票、活動領券與核銷整合，新增入口 QR 自助報到',
     problem: '票券發放、會員查票與現場核銷分散，工作人員難以查明來源與使用狀態。',
     solution: '整合 LINE 票夾、核銷與活動來源統計，新增兩日活動登記與同券同日不重複計數的自助報到。',
-    result: '10 月完成活動登記與自助報到正式發布，分開呈現自助申報與員工核實；活動日實際報到仍待驗收。',
+    result: '10 月完成活動登記與自助報到正式發布，分開呈現自助申報與員工核實；萬聖兩個活動日已實際使用，登記與到場可依來源拆解。',
   },
   {
     slug: '18-tourism-data-analysis',

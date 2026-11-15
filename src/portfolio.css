@@ -77,6 +77,14 @@
 .advertising-metrics dd { margin: 6px 0 0; font-size: clamp(27px, 3vw, 38px); font-weight: 700; line-height: 1.25; letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
 .advertising-metrics dd span { font-size: 14px; font-weight: 400; letter-spacing: 0; }
 .advertising-note { color: var(--portfolio-muted); font-size: 12px; line-height: 1.8; }
+.advertising-measure { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto; gap: 20px 32px; align-items: center; padding: 22px 26px; border: 1px solid var(--portfolio-line); border-radius: 8px; background: #fff; }
+.advertising-measure-copy { min-width: 0; }
+.advertising-measure h4 { margin: 4px 0 0; font-size: 19px; font-weight: 700; line-height: 1.5; letter-spacing: -.02em; }
+.advertising-measure-copy p:last-child { margin-top: 6px !important; color: var(--portfolio-muted); font-size: 14px; line-height: 1.8; }
+.advertising-measure-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 0; }
+.advertising-measure-stats > div { display: flex; flex-direction: column-reverse; }
+.advertising-measure-stats dd { margin: 0; font-size: 26px; font-weight: 700; line-height: 1.25; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.advertising-measure-stats dt { margin-top: 4px; color: var(--portfolio-muted); font-size: 12px; line-height: 1.6; }
 .selected-exhibits { display: grid; grid-template-columns: 1.03fr 1fr; grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 22px 28px; }
 .exhibit { min-width: 0; }
 .exhibit-main { grid-row: span 2; }
@@ -155,6 +163,8 @@
   .phone-mockup { bottom: 20px; border-width: 5px; border-radius: 22px; }
   .intro-copy h1 { font-size: 30px; }
   .expertise-strip { gap: 24px; }
+  .advertising-measure { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
+  .advertising-measure > .portfolio-button { grid-column: 1 / -1; justify-self: start; }
   .selected-exhibits { grid-template-columns: 1fr 1fr; }
   .exhibit-side { gap: 15px; }
   .exhibit-side .exhibit-image { min-height: 150px; }
@@ -204,6 +214,9 @@
   .advertising-actions { align-items: stretch; flex-direction: column; gap: 8px; }
   .advertising-contact { justify-content: center; }
   .advertising-metrics { gap: 20px 12px; }
+  .advertising-measure { grid-template-columns: 1fr; gap: 18px; padding: 20px 18px; }
+  .advertising-measure h4 { font-size: 17px; }
+  .advertising-measure > .portfolio-button { justify-self: stretch; }
   .selected-exhibits { grid-template-columns: 1fr; gap: 28px; }
   .exhibit-main { grid-row: auto; }
   .camp-exhibit { min-height: 0; aspect-ratio: 1.4; padding: 26px 18px; }

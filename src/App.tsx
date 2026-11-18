@@ -5,7 +5,11 @@ import './portfolio.css'
 
 const campImage = '/images/cases/01-summer-camp/result.webp'
 const huntImage = '/videos/行銷活動/14-anniversary-find-four.jpg'
-const reviewImage = '/videos/自動化與AI/13-customer-service-automation.jpg'
+// 三張精選大卡放廣告投放相關案例。戰情室與量測機制的畫面都是打碼後的實際截圖
+//（量測機制那張由 scripts/capture-warroom-masked.mjs 產生）。
+const adsImage = '/videos/行銷活動/15-meta-ads-warroom.jpg'
+const measureImage = '/images/cases/20-campaign-measurement/card.webp'
+const seoImage = '/images/cases/16-seo-analytics/card.webp'
 const caseUrl = (slug: string) => `/case/${slug}/`
 const contactHref = 'mailto:s110905toyo@gmail.com?subject=%E4%BD%9C%E5%93%81%E9%9B%86%E5%90%88%E4%BD%9C%E8%AB%AE%E8%A9%A2'
 
@@ -134,17 +138,17 @@ function Hero() {
 function SelectedWork() {
   return (
     <div className="selected-exhibits">
-      <a className="exhibit exhibit-main" href={caseUrl('01-summer-camp')} onClick={() => trackCaseClick('01-summer-camp', 'featured_card')}>
-        <div className="exhibit-image camp-exhibit"><img src={campImage} alt="夏令營報名系統首頁" width="1400" height="788" loading="lazy" /></div>
-        <div className="exhibit-copy"><h3>夏令營一站式報名系統</h3><p>23 個梯次，1 小時內完成報名</p><ArrowUpRight aria-hidden="true" /></div>
+      <a className="exhibit exhibit-main" href={caseUrl('15-meta-ads-warroom')} onClick={() => trackCaseClick('15-meta-ads-warroom', 'featured_card')}>
+        <div className="exhibit-image camp-exhibit"><img src={adsImage} alt="Meta 廣告戰情室畫面，金額已打碼" width="1280" height="720" loading="lazy" /></div>
+        <div className="exhibit-copy"><h3>Meta 廣告戰情室</h3><p>每次到站 NT$2.35，進站到達率 81.3%</p><ArrowUpRight aria-hidden="true" /></div>
       </a>
-      <a className="exhibit exhibit-side" href={caseUrl('14-anniversary-find-four')} onClick={() => trackCaseClick('14-anniversary-find-four', 'featured_card')}>
-        <div className="exhibit-image hunt-exhibit"><div className="exhibit-phone"><img src={huntImage} alt="園區尋4集點系統" width="1280" height="720" loading="lazy" /></div></div>
-        <div className="exhibit-copy"><h3>4 周年尋4大作戰</h3><p>4,190 次領獎，2,416 份體驗問卷</p><ArrowUpRight aria-hidden="true" /></div>
+      <a className="exhibit exhibit-side" href={caseUrl('20-campaign-measurement')} onClick={() => trackCaseClick('20-campaign-measurement', 'featured_card')}>
+        <div className="exhibit-image review-exhibit measure-exhibit"><img src={measureImage} alt="活動登記依平台與來源拆解的報表，數字已打碼" width="1440" height="1156" loading="lazy" /></div>
+        <div className="exhibit-copy"><h3>活動成效量測機制</h3><p>登記自動帶入來源，33.3% 來自廣告入口</p><ArrowUpRight aria-hidden="true" /></div>
       </a>
-      <a className="exhibit exhibit-side" href={caseUrl('13-customer-service-automation')} onClick={() => trackCaseClick('13-customer-service-automation', 'featured_card')}>
-        <div className="exhibit-image review-exhibit"><img src={reviewImage} alt="AI 客服調度台示範畫面" width="1280" height="720" loading="lazy" /></div>
-        <div className="exhibit-copy"><h3>Google 評論 AI 客服</h3><p>100 則評論驗收，人工保留發布權</p><ArrowUpRight aria-hidden="true" /></div>
+      <a className="exhibit exhibit-side" href={caseUrl('16-seo-analytics')} onClick={() => trackCaseClick('16-seo-analytics', 'featured_card')}>
+        <div className="exhibit-image review-exhibit"><img src={seoImage} alt="官網流量管道分析報告畫面" width="1280" height="720" loading="lazy" /></div>
+        <div className="exhibit-copy"><h3>官網 SEO 與 GA4 成效分析</h3><p>分管道判讀流量，找出活動頁卡點</p><ArrowUpRight aria-hidden="true" /></div>
       </a>
     </div>
   )
